@@ -1,39 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿namespace ConsoleGame.Classes;
 
-namespace ConsoleGame.Classes;
-
-public class Input
+public static class Input
 {
-    public InputStatus GetInput()
+    private const ConsoleKey QuitKey = ConsoleKey.Escape;
+    
+    private static Actions _action;
+    public static Actions Get
     {
-        var status = new InputStatus();
-        if (Keyboard.IsKeyDown(Key.Up))
-            status.Direction = Direction.UP;
-        if (Keyboard.IsKeyDown(Key.Down))
-            status.Direction = Direction.DOWN;
-        if (Keyboard.IsKeyDown(Key.Left))
-            status.Direction = Direction.LEFT;
-        if (Keyboard.IsKeyDown(Key.Right))
-            status.Direction = Direction.RIGHT;
-        return status;
+        get
+        {
+            var action = _action;
+            _action = Actions.None;
+
+            return action;
+        }
+    }
+
+    public static void GetInput()
+    {
+        ConsoleKeyInfo input;
+
+        do
+        {
+            input = Console.ReadKey(true);
+
+            _action = input.Key switch
+            {
+                ConsoleKey.UpArrow => Actions.Up,
+                ConsoleKey.DownArrow => Actions.Down,
+                ConsoleKey.LeftArrow => Actions.Left,
+                ConsoleKey.RightArrow => Actions.Right,
+                ConsoleKey.Spacebar => Actions.Shoot,
+                _ => _action
+            };
+        } while (input.Key != QuitKey);
     }
 }
 
-public class InputStatus
-{
-    public Directions Direction { get; set; }
-}
-
-public enum Directions
+public enum Actions
 {
     None,
     Up,
     Down,
     Left,
-    Right
+    Right,
+    Shoot
 }

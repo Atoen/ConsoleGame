@@ -78,9 +78,10 @@ public class Player
     {
         for (var i = 0; i < Sprite.GetLength(0); i++)
         {
-            Display.Print(Pos.X + i - 1, Pos.Y - 1, ' ');
-            Display.Print(Pos.X + i - 1, Pos.Y, ' ');
-            Display.Print(Pos.X + i - 1, Pos.Y + 1, ' ');
+            Display.ClearAt(Pos.X + i - 1, Pos.Y + 1);
+            Display.ClearAt(Pos.X + i - 1, Pos.Y);
+            Display.ClearAt(Pos.X + i - 1, Pos.Y - 1);
+            
         }
     }
 }

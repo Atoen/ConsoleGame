@@ -1,27 +1,32 @@
 ﻿namespace ConsoleGame.Structs;
 
-public struct ProjectileData
+public struct ProjectileInfo
 {
     public readonly int PosX;
     public readonly int PosY;
-    public readonly float Speed;
-    public readonly bool Hostile;
-    public readonly int Damage;
+    public readonly float Speed = 1;
+    public readonly bool Hostile = true;
+    public readonly int Damage = 1;
     public readonly char Symbol;
     public readonly ConsoleColor Color;
     public readonly ProjectileDirection Direction;
 
-    public ProjectileData()
+    public ProjectileInfo()
     {
         PosX = 0;
         PosY = 0;
-        Speed = 1;
-        Hostile = true;
-        Damage = 1;
         Symbol = '|';
         Color = ConsoleColor.White;
         Direction = ProjectileDirection.Down;
+    }
 
+    public ProjectileInfo(int posX, int posY)
+    {
+        PosX = posX;
+        PosY = posY;
+        Symbol = '|';
+        Color = ConsoleColor.White;
+        Direction = ProjectileDirection.Down;
     }
 }
 

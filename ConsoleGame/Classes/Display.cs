@@ -45,4 +45,12 @@ public static class Display
         ColorBuffer[posX, posY] = color;
         _modified = true;
     }
+
+    public static void ClearAt(int posX, int posY)
+    {
+        if (ScreenBuffer[posX, posY] == ' ') return;
+
+        ScreenBuffer[posX, posY] = ' ';
+        _modified = true;
+    }
 }

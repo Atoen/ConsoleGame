@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
 
@@ -11,6 +12,7 @@ public static class Game
     private const int TickSpeed = 50;
 
     private static readonly Player Player = new();
+    private static readonly List<Projectile> Projectiles = new();
 
 #pragma warning disable CA1416
     public static void Start()

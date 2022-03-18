@@ -5,11 +5,6 @@ public struct Position
     public int X { get; set; }
     public int Y { get; set; }
     
-    public bool Equals(Position other)
-    {
-        return X == other.X && Y == other.Y;
-    }
-
     public override bool Equals(object? obj)
     {
         return obj is Position other && Equals(other);

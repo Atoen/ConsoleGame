@@ -31,8 +31,6 @@ public class Projectile : IRemovable
 
     public void Draw()
     {
-        if (!IsActive) return;
-        
         Display.Print(Pos.X, Pos.Y, _symbol, _color);
     }
 
@@ -91,7 +89,11 @@ public class Projectile : IRemovable
     public void Remove()
     {
         IsActive = false;
-        Display.ClearAt(Pos.X, Pos.Y);
         ObjectManager.MarkForRemoval(this);
+    }
+
+    public void Clear()
+    {
+        Display.ClearAt(Pos.X, Pos.Y);
     }
 }

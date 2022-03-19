@@ -21,6 +21,8 @@ public static class Game
         Console.SetBufferSize(GameScreenWidth, GameScreenHeight);
         Console.CursorVisible = false;
 
+        PrepareField();
+        
         var inputThread = new Thread(Input.GetInput);
         inputThread.Start();
         MainLoop();
@@ -48,6 +50,14 @@ public static class Game
             stopwatch.Reset();
 
             Thread.Sleep(timeToSleep);
+        }
+    }
+
+    private static void PrepareField()
+    {
+        for (var i = 0; i < 10; i++)
+        {
+            ObjectManager.Add(new Obstacle(10 + i, 15));
         }
     }
 }

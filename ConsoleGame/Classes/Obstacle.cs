@@ -8,23 +8,43 @@ public class Obstacle : IRemovable
     private const char Symbol = '█';
     private const ConsoleColor Color = ConsoleColor.White;
 
-    public Position Pos;
+    private readonly Position _pos;
     private int _health;
 
     public Obstacle(int posX, int posY, int health = 2)
     {
-        Pos.X = posX;
-        Pos.Y = posY;
+        _pos.X = posX;
+        _pos.Y = posY;
         _health = health;
     }
 
     public void Draw()
     {
-        Display.Print(Pos.X, Pos.Y, Symbol, Color);
+        Display.Print(_pos.X, _pos.Y, Symbol, Color);
     }
-    
+
+    public bool HitBox(Projectile projectile)
+    {
+        if (projectile.Pos != _pos) return false;
+        
+        Hit(projectile.Damage);
+        return true;
+
+    }
+
+    private void Hit(int damage)
+    {
+        _health -= damage;
+
+        if (_health < 1)
+        {
+            Remove();
+        }
+    }
+
     public void Remove()
     {
-        Display.ClearAt(Pos.X, Pos.Y);
+        Display.ClearAt(_pos.X, _pos.Y);
+        ObjectManager.MarkForRemoval(this);
     }
 }

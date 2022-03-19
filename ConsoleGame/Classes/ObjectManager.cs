@@ -11,10 +11,24 @@ public static class ObjectManager
 
     public static void Update()
     {
-        foreach (var projectile in Projectiles)
+        for (var i = 0; i < Projectiles.Count; i++)
         {
+            var projectile = Projectiles[i];
+            
             projectile.Move();
+
+            if (CheckCollision(ref projectile))
+            {
+                MarkForRemoval(projectile);
+                System.Diagnostics.Debug.WriteLine("marked");
+            }
+            
             projectile.Draw();
+        }
+
+        foreach (var obstacle in Obstacles)
+        {
+            obstacle.Draw();
         }
     }
 
@@ -40,9 +54,10 @@ public static class ObjectManager
             switch (removable)
             {
                 case Projectile projectile:
+                    projectile.Clear();
                     Projectiles.Remove(projectile);
                     break;
-                
+
                 case Obstacle obstacle:
                     Obstacles.Remove(obstacle);
                     break;
@@ -50,5 +65,15 @@ public static class ObjectManager
         }
         
         Removables.Clear();
+    }
+
+    private static bool CheckCollision(ref Projectile projectile)
+    {
+        foreach (var obstacle in Obstacles)
+        {
+            if (obstacle.HitBox(projectile)) return true;
+        }
+
+        return false;
     }
 }

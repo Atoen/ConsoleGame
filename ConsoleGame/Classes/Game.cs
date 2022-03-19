@@ -9,7 +9,7 @@ public static class Game
     public const int GameScreenWidth = 100;
     public const int GameScreenHeight = 30;
     
-    private const int TickSpeed = 200;
+    private const int TickSpeed = 50;
 
     private static readonly Player Player = new();
 
@@ -35,11 +35,12 @@ public static class Game
             stopwatch.Start();
 
             Player.PerformAction(Input.Get);
-            Player.Draw();
             
-            // MoveProjectiles();
             ObjectManager.Update();
             ObjectManager.Clear();
+            
+            Player.Draw();
+            
             Display.Update();
             
             stopwatch.Stop();
@@ -49,18 +50,4 @@ public static class Game
             Thread.Sleep(timeToSleep);
         }
     }
-
-    // private static void MoveProjectiles()
-    // {
-    //     foreach (var projectile in Projectiles)
-    //     {
-    //         projectile.Move();
-    //         projectile.Draw();
-    //     }
-    // }
-
-    // public static void AddProjectile(ProjectileInfo info)
-    // {
-    //     Projectiles.Add(new Projectile(info));
-    // }
 }

@@ -4,13 +4,14 @@ namespace ConsoleGame.Classes;
 
 public static class ObjectManager
 {
-    private static List<IRemovable> _removables = new();
+    private static readonly List<IRemovable> Removables = new();
 
-    private static List<Projectile> _projectiles = new();
+    private static readonly List<Projectile> Projectiles = new();
+    private static readonly List<Obstacle> Obstacles = new();
 
     public static void Update()
     {
-        foreach (var projectile in _projectiles)
+        foreach (var projectile in Projectiles)
         {
             projectile.Move();
             projectile.Draw();
@@ -19,16 +20,35 @@ public static class ObjectManager
 
     public static void Add(Projectile projectile)
     {
-        _projectiles.Add(projectile);
+        Projectiles.Add(projectile);
     }
 
-    public static void Remove(IRemovable item)
+    public static void Add(Obstacle obstacle)
     {
-        _removables.Add(item);
+        Obstacles.Add(obstacle);
+    }
+    
+    public static void MarkForRemoval(IRemovable item)
+    {
+        Removables.Add(item);
     }
 
     public static void Clear()
     {
-        _removables.Clear();
+        foreach (var removable in Removables)
+        {
+            switch (removable)
+            {
+                case Projectile projectile:
+                    Projectiles.Remove(projectile);
+                    break;
+                
+                case Obstacle obstacle:
+                    Obstacles.Remove(obstacle);
+                    break;
+            }
+        }
+        
+        Removables.Clear();
     }
 }

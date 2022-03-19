@@ -49,7 +49,7 @@ public static class Display
     public static void ClearAt(int posX, int posY)
     {
         if (ScreenBuffer[posX, posY] == ' ') return;
-
+        
         ScreenBuffer[posX, posY] = ' ';
         _modified = true;
     }

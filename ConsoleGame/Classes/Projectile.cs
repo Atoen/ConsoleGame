@@ -13,6 +13,7 @@ public class Projectile : IRemovable
     public readonly int Damage;
     public readonly bool Hostile;
     public Position Pos;
+
     public bool IsActive = true;
     
     public Projectile(ProjectileInfo info)
@@ -30,6 +31,8 @@ public class Projectile : IRemovable
 
     public void Draw()
     {
+        if (!IsActive) return;
+        
         Display.Print(Pos.X, Pos.Y, _symbol, _color);
     }
 
@@ -40,7 +43,6 @@ public class Projectile : IRemovable
         switch (_direction)
         {
             case ProjectileDirection.Down:
-            {
                 if (Pos.Y >= Game.GameScreenHeight - 1)
                 {
                     Remove();
@@ -50,9 +52,8 @@ public class Projectile : IRemovable
                 Pos.Y += (int) _speed;
 
                 break;
-            }
+
             case ProjectileDirection.Up:
-            {
                 if (Pos.Y <= 0)
                 {
                     Remove();
@@ -62,9 +63,8 @@ public class Projectile : IRemovable
                 Pos.Y -= (int) _speed;
 
                 break;
-            }
+
             case ProjectileDirection.Left:
-            {
                 if (Pos.X <= 0)
                 {
                     Remove();
@@ -74,10 +74,8 @@ public class Projectile : IRemovable
                 Pos.X -= (int) _speed;
 
                 break;
-            }
 
             case ProjectileDirection.Right:
-            {
                 if (Pos.X >= Game.GameScreenWidth - 1)
                 {
                     Remove();
@@ -87,17 +85,13 @@ public class Projectile : IRemovable
                 Pos.X += (int) _speed;
 
                 break;
-            }
         }
     }
-
+    
     public void Remove()
     {
-        // System.Diagnostics.Debug.WriteLine("removing");
-        
-        // Display.ClearAt(Pos.X, Pos.Y);
-        Display.Print(Pos.X, Pos.Y, 'd');
-        ObjectManager.Remove(this);
-        
+        IsActive = false;
+        Display.ClearAt(Pos.X, Pos.Y);
+        ObjectManager.MarkForRemoval(this);
     }
 }

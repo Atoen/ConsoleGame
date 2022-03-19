@@ -76,8 +76,7 @@ public class Player
             Hostile = false,
             Direction = ProjectileDirection.Up
         };
-
-        // Game.AddProjectile(info);
+        
         ObjectManager.Add(new Projectile(info));
     }
 

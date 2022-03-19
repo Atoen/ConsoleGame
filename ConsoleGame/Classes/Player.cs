@@ -10,9 +10,11 @@ public class Player
         {'/', '■', '\\'},
         {'|', ' ', '|'}
     };
+    private const char ProjectileSymbol = '|';
 
     private const ConsoleColor Color = ConsoleColor.DarkGreen;
     private const ConsoleColor ProjectileColor = ConsoleColor.Cyan;
+    
     private const int AttackDelay = 5;
     
     // public Position Pos { get; }
@@ -20,8 +22,8 @@ public class Player
 
     public Position Pos;
     public int Health = 5;
-        
-    private int _attackCD;
+    
+    private int _attackCd;
 
     public Player(int startX = 30, int startY = 20)
     {
@@ -31,6 +33,8 @@ public class Player
 
     public void PerformAction(Actions action)
     {
+        if (_attackCd > 0) _attackCd--;
+
         if (action == Actions.None) return;
         
         Clear();
@@ -61,7 +65,20 @@ public class Player
 
     private void Shoot()
     {
+        if (_attackCd > 0) return;
+
+        _attackCd = AttackDelay;
         
+        var info = new ProjectileInfo(Pos.X, Pos.Y - 1)
+        {
+            Symbol = ProjectileSymbol,
+            Color = ProjectileColor,
+            Hostile = false,
+            Direction = ProjectileDirection.Up
+        };
+
+        // Game.AddProjectile(info);
+        ObjectManager.Add(new Projectile(info));
     }
 
     public void Draw()

@@ -1,15 +1,17 @@
-﻿namespace ConsoleGame.Structs;
+﻿using System.Collections;
+
+namespace ConsoleGame.Structs;
 
 public struct ProjectileInfo
 {
-    public readonly int PosX;
-    public readonly int PosY;
-    public readonly float Speed = 1;
-    public readonly bool Hostile = true;
-    public readonly int Damage = 1;
-    public readonly char Symbol;
-    public readonly ConsoleColor Color;
-    public readonly ProjectileDirection Direction;
+    public int PosX;
+    public int PosY;
+    public float Speed = 1;
+    public bool Hostile = true;
+    public int Damage = 1;
+    public char Symbol;
+    public ConsoleColor Color;
+    public ProjectileDirection Direction;
 
     public ProjectileInfo()
     {

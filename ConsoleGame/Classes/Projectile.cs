@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using ConsoleGame.Interfaces;
 using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
 
-public class Projectile 
+public class Projectile : IRemovable
 {
     private readonly char _symbol;
     private readonly ConsoleColor _color;
@@ -41,28 +41,63 @@ public class Projectile
         {
             case ProjectileDirection.Down:
             {
-                if (Pos.Y < Game.GameScreenHeight - 1)
+                if (Pos.Y >= Game.GameScreenHeight - 1)
                 {
-                    Pos.Y += (int) _speed;
+                    Remove();
+                    return;
                 }
+                
+                Pos.Y += (int) _speed;
 
                 break;
             }
             case ProjectileDirection.Up:
             {
-                if (Pos.Y > 0)
+                if (Pos.Y <= 0)
                 {
-                    Pos.Y -= (int) _speed;
+                    Remove();
+                    return;
                 }
+
+                Pos.Y -= (int) _speed;
 
                 break;
             }
             case ProjectileDirection.Left:
+            {
+                if (Pos.X <= 0)
+                {
+                    Remove();
+                    return;
+                }
+
+                Pos.X -= (int) _speed;
+
                 break;
+            }
+
             case ProjectileDirection.Right:
+            {
+                if (Pos.X >= Game.GameScreenWidth - 1)
+                {
+                    Remove();
+                    return;
+                }
+
+                Pos.X += (int) _speed;
+
                 break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            }
         }
+    }
+
+    public void Remove()
+    {
+        // System.Diagnostics.Debug.WriteLine("removing");
+        
+        // Display.ClearAt(Pos.X, Pos.Y);
+        Display.Print(Pos.X, Pos.Y, 'd');
+        ObjectManager.Remove(this);
+        
     }
 }

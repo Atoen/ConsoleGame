@@ -9,10 +9,9 @@ public static class Game
     public const int GameScreenWidth = 100;
     public const int GameScreenHeight = 30;
     
-    private const int TickSpeed = 50;
+    private const int TickSpeed = 200;
 
     private static readonly Player Player = new();
-    private static readonly List<Projectile> Projectiles = new();
 
 #pragma warning disable CA1416
     public static void Start()
@@ -38,13 +37,30 @@ public static class Game
             Player.PerformAction(Input.Get);
             Player.Draw();
             
+            // MoveProjectiles();
+            ObjectManager.Update();
+            ObjectManager.Clear();
             Display.Update();
             
             stopwatch.Stop();
             var timeToSleep = Math.Max(TickSpeed - (int) stopwatch.ElapsedMilliseconds, 0);
             stopwatch.Reset();
-            
+
             Thread.Sleep(timeToSleep);
         }
     }
+
+    // private static void MoveProjectiles()
+    // {
+    //     foreach (var projectile in Projectiles)
+    //     {
+    //         projectile.Move();
+    //         projectile.Draw();
+    //     }
+    // }
+
+    // public static void AddProjectile(ProjectileInfo info)
+    // {
+    //     Projectiles.Add(new Projectile(info));
+    // }
 }

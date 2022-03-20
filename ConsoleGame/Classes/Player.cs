@@ -10,19 +10,20 @@ public class Player
         {'/', '■', '\\'},
         {'|', ' ', '|'}
     };
+
     private const char ProjectileSymbol = '|';
 
     private const ConsoleColor Color = ConsoleColor.DarkGreen;
     private const ConsoleColor ProjectileColor = ConsoleColor.Cyan;
-    
+
     private const int AttackDelay = 5;
-    
+
     // public Position Pos { get; }
     // public int Health { get; }
 
     public Position Pos;
     public int Health = 5;
-    
+
     private int _attackCd;
 
     public Player(int startX = 30, int startY = 20)
@@ -36,27 +37,27 @@ public class Player
         if (_attackCd > 0) _attackCd--;
 
         if (action == Actions.None) return;
-        
+
         Clear();
-        
+
         switch (action)
         {
             case Actions.Up when Pos.Y > 1:
                 Pos.Y--;
                 break;
-            
+
             case Actions.Down when Pos.Y < Game.GameScreenHeight - 4:
                 Pos.Y++;
                 break;
-            
+
             case Actions.Left when Pos.X > 1:
                 Pos.X--;
                 break;
-            
+
             case Actions.Right when Pos.X < Game.GameScreenWidth - 2:
                 Pos.X++;
                 break;
-            
+
             case Actions.Shoot:
                 Shoot();
                 break;
@@ -68,15 +69,15 @@ public class Player
         if (_attackCd > 0) return;
 
         _attackCd = AttackDelay;
-        
+
         var info = new ProjectileInfo(Pos.X, Pos.Y - 1)
         {
             Symbol = ProjectileSymbol,
             Color = ProjectileColor,
             Hostile = false,
-            Direction = ProjectileDirection.Up
+            Direction = ProjectileDirection.Up,
         };
-        
+
         ObjectManager.Add(new Projectile(info));
     }
 
@@ -97,7 +98,6 @@ public class Player
             Display.ClearAt(Pos.X + i - 1, Pos.Y + 1);
             Display.ClearAt(Pos.X + i - 1, Pos.Y);
             Display.ClearAt(Pos.X + i - 1, Pos.Y - 1);
-            
         }
     }
 }

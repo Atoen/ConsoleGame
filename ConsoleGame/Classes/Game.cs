@@ -39,7 +39,7 @@ public static class Game
             Player.PerformAction(Input.Get);
             
             ObjectManager.Update();
-            ObjectManager.Clear();
+            ObjectManager.CleanUp();
             
             Player.Draw();
             

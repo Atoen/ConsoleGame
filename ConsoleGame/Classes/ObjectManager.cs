@@ -11,19 +11,13 @@ public static class ObjectManager
 
     public static void Update()
     {
-        for (var i = 0; i < Projectiles.Count; i++)
+        
+        foreach (var projectile in Projectiles)
         {
-            var projectile = Projectiles[i];
-            
             projectile.Move();
-
-            if (CheckCollision(ref projectile))
-            {
-                MarkForRemoval(projectile);
-                System.Diagnostics.Debug.WriteLine("marked");
-            }
             
-            projectile.Draw();
+            if (!CheckCollision(projectile)) continue;
+            MarkForRemoval(projectile);
         }
 
         foreach (var obstacle in Obstacles)
@@ -47,18 +41,18 @@ public static class ObjectManager
         Removables.Add(item);
     }
 
-    public static void Clear()
+    public static void CleanUp()
     {
         foreach (var removable in Removables)
         {
             switch (removable)
             {
                 case Projectile projectile:
-                    projectile.Clear();
                     Projectiles.Remove(projectile);
                     break;
 
                 case Obstacle obstacle:
+                    obstacle.Clear();
                     Obstacles.Remove(obstacle);
                     break;
             }
@@ -67,7 +61,7 @@ public static class ObjectManager
         Removables.Clear();
     }
 
-    private static bool CheckCollision(ref Projectile projectile)
+    private static bool CheckCollision(Projectile projectile)
     {
         foreach (var obstacle in Obstacles)
         {

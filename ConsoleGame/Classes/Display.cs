@@ -5,7 +5,7 @@ public static class Display
     private static readonly char[,] ScreenBuffer = new char[Game.GameScreenWidth, Game.GameScreenHeight];
     private static readonly char[,] ScreenBufferOld = new char[Game.GameScreenWidth, Game.GameScreenHeight];
     private static readonly ConsoleColor[,] ColorBuffer = new ConsoleColor[Game.GameScreenWidth, Game.GameScreenHeight];
-    
+
     private static bool _modified;
 
     public static void Update()
@@ -13,17 +13,15 @@ public static class Display
         if (!_modified) return;
 
         for (var i = 0; i < Game.GameScreenWidth; i++)
+        for (var j = 0; j < Game.GameScreenHeight; j++)
         {
-            for (var j = 0; j < Game.GameScreenHeight; j++)
-            {
-                if (ScreenBuffer[i, j] == ScreenBufferOld[i, j]) continue;
-                
-                Console.SetCursorPosition(i, j);
-                Console.ForegroundColor = ColorBuffer[i, j];
-                Console.WriteLine(ScreenBuffer[i, j]);
+            if (ScreenBuffer[i, j] == ScreenBufferOld[i, j]) continue;
 
-                ScreenBufferOld[i, j] = ScreenBuffer[i, j];
-            }
+            Console.SetCursorPosition(i, j);
+            Console.ForegroundColor = ColorBuffer[i, j];
+            Console.WriteLine(ScreenBuffer[i, j]);
+
+            ScreenBufferOld[i, j] = ScreenBuffer[i, j];
         }
 
         _modified = false;
@@ -49,7 +47,7 @@ public static class Display
     public static void ClearAt(int posX, int posY)
     {
         if (ScreenBuffer[posX, posY] == ' ') return;
-        
+
         ScreenBuffer[posX, posY] = ' ';
         _modified = true;
     }

@@ -26,10 +26,9 @@ public class Obstacle : IRemovable
     public bool HitBox(Projectile projectile)
     {
         if (projectile.Pos != _pos) return false;
-        
+
         Hit(projectile.Damage);
         return true;
-
     }
 
     private void Hit(int damage)
@@ -44,7 +43,13 @@ public class Obstacle : IRemovable
 
     public void Remove()
     {
-        Display.ClearAt(_pos.X, _pos.Y);
         ObjectManager.MarkForRemoval(this);
+    }
+
+    // Po zflagowaniu do usuniecia przeskodna nadal sie rysuje
+    // Usuwanie wykonywanie jest po updacie wszystkich obiektow
+    public void Clear()
+    {
+        Display.ClearAt(_pos.X, _pos.Y);
     }
 }

@@ -9,27 +9,27 @@ public class Projectile : IRemovable
     private readonly ConsoleColor _color;
     private readonly float _speed;
     private readonly ProjectileDirection _direction;
-    
+
     public readonly int Damage;
     public readonly bool Hostile;
     public Position Pos;
 
     public bool IsActive = true;
-    
+
     public Projectile(ProjectileInfo info)
     {
         Pos.X = info.PosX;
         Pos.Y = info.PosY;
         Hostile = info.Hostile;
         Damage = info.Damage;
-        
+
         _speed = info.Speed;
         _symbol = info.Symbol;
         _color = info.Color;
         _direction = info.Direction;
     }
 
-    public void Draw()
+    private void Draw()
     {
         Display.Print(Pos.X, Pos.Y, _symbol, _color);
     }
@@ -46,9 +46,9 @@ public class Projectile : IRemovable
                     Remove();
                     return;
                 }
-                
-                Pos.Y += (int) _speed;
 
+                // Pos.Y += (int) _speed;
+                Pos.AddFraction(0, _speed);
                 break;
 
             case ProjectileDirection.Up:
@@ -58,8 +58,8 @@ public class Projectile : IRemovable
                     return;
                 }
 
-                Pos.Y -= (int) _speed;
-
+                // Pos.Y -= (int) _speed;
+                Pos.AddFraction(0, -_speed);
                 break;
 
             case ProjectileDirection.Left:
@@ -69,8 +69,10 @@ public class Projectile : IRemovable
                     return;
                 }
 
-                Pos.X -= (int) _speed;
+                // Pos.X -= (int) _speed;
+                Pos.AddFraction(-_speed, 0);
 
+                
                 break;
 
             case ProjectileDirection.Right:
@@ -80,20 +82,19 @@ public class Projectile : IRemovable
                     return;
                 }
 
-                Pos.X += (int) _speed;
+                // Pos.X += (int) _speed;
+                Pos.AddFraction(_speed, 0);
 
+                
                 break;
         }
+
+        Draw();
     }
-    
+
     public void Remove()
     {
         IsActive = false;
         ObjectManager.MarkForRemoval(this);
-    }
-
-    public void Clear()
-    {
-        Display.ClearAt(Pos.X, Pos.Y);
     }
 }

@@ -87,6 +87,16 @@ public class Player
         }
     }
 
+    public void HitBox(ProjectileOld projectileOld)
+    {
+        
+    }
+
+    private void Hit(int damage)
+    {
+        
+    }
+    
     private void Clear()
     {
         for (var i = 0; i < Sprite.GetLength(0); i++)

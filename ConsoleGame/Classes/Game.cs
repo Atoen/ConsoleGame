@@ -58,6 +58,7 @@ public static class Game
     {
         for (var i = 0; i < 10; i++)
         {
+            // ObjectManager.Add(new Obstacle(10 + i, 15));
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 

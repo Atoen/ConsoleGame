@@ -1,27 +1,35 @@
-﻿using ConsoleGame.Structs;
+﻿using ConsoleGame.Interfaces;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
 
-public class Projectile : GameObject
+public class ProjectileOld : IRemovable
 {
+    private readonly char _symbol;
+    private readonly ConsoleColor _color;
     private readonly float _speed;
     private readonly ProjectileDirection _direction;
 
     public readonly int Damage;
     public readonly bool Hostile;
-    public Position Position => Pos;
-    public Projectile(ProjectileInfo info) : base(info.PosX, info.PosY)
+    public Position Pos;
+
+    public ProjectileOld(ProjectileInfo info)
     {
         Pos.X = info.PosX;
         Pos.Y = info.PosY;
-        
         Hostile = info.Hostile;
         Damage = info.Damage;
-        Symbol = info.Symbol;
-        Color = info.Color;
 
         _speed = info.Speed;
+        _symbol = info.Symbol;
+        _color = info.Color;
         _direction = info.Direction;
+    }
+
+    private void Draw()
+    {
+        Display.Print(Pos.X, Pos.Y, _symbol, _color);
     }
 
     public void Move()
@@ -70,5 +78,12 @@ public class Projectile : GameObject
                 Pos.AddFraction(_speed, 0);
                 break;
         }
+        
+        Draw();
+    }
+
+    public void Remove()
+    {
+        ObjectManager.MarkForRemoval(this);
     }
 }

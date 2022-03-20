@@ -38,7 +38,7 @@ public class Enemy : IRemovable
 
     public bool HitBox(Projectile projectile)
     {
-        if (projectile.Pos.Y != _pos.Y || !(MathF.Abs(projectile.Pos.X - _pos.X) <= 1)) return false;
+        if (projectile.Position.Y != _pos.Y || !(MathF.Abs(projectile.Position.X - _pos.X) <= 1)) return false;
 
         Hit(projectile.Damage);
         return true;

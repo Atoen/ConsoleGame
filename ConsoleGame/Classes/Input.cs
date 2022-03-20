@@ -3,8 +3,10 @@
 public static class Input
 {
     private const ConsoleKey QuitKey = ConsoleKey.Escape;
-    
     private static Actions _action;
+
+    public static event EventHandler QuitEvent = delegate {};
+    
     public static Actions Get
     {
         get
@@ -34,6 +36,8 @@ public static class Input
                 _ => _action
             };
         } while (input.Key != QuitKey);
+        
+        QuitEvent(null, EventArgs.Empty);
     }
 }
 

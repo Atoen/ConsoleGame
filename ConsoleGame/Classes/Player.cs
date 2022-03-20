@@ -87,7 +87,7 @@ public class Player
         }
     }
 
-    public void HitBox(ProjectileOld projectileOld)
+    public void HitBox(Projectile projectile)
     {
         
     }

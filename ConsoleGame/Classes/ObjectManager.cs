@@ -10,20 +10,14 @@ public static class ObjectManager
     private static readonly List<Obstacle> Obstacles = new();
     private static readonly List<Enemy> Enemies = new();
 
-    // private static readonly List<ObstacleOld> Obstacles = new();
-
     public static void Update()
     {
-        System.Diagnostics.Debug.WriteLine(Projectiles.Count);
-        
         foreach (var projectile in Projectiles)
         {
             projectile.Move();
 
             if (!CheckCollision(projectile)) continue;
             MarkForRemoval(projectile);
-            
-            projectile.Draw();
         }
 
         foreach (var enemy in Enemies)
@@ -76,7 +70,6 @@ public static class ObjectManager
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
-                
             }
         }
         

@@ -70,5 +70,7 @@ public class Projectile : GameObject
                 Pos.AddFraction(_speed, 0);
                 break;
         }
+        
+        Draw();
     }
 }

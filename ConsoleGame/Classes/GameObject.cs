@@ -16,12 +16,12 @@ public class GameObject : IRemovable
         Pos.Y = posY;
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
         Display.Print(Pos.X, Pos.Y, Symbol, Color);
     }
 
-    public bool HitBox(Projectile projectile)
+    public virtual bool HitBox(Projectile projectile)
     {
         if (projectile.Pos != Pos) return false;
         
@@ -29,7 +29,7 @@ public class GameObject : IRemovable
         return true;
     }
 
-    private void Hit(int damage)
+    protected void Hit(int damage)
     {
         Health -= damage;
 
@@ -44,7 +44,7 @@ public class GameObject : IRemovable
         ObjectManager.MarkForRemoval(this);
     }
 
-    public void Clear()
+    public virtual void Clear()
     {
         Display.ClearAt(Pos.X, Pos.Y);
     }

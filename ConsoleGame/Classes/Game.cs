@@ -16,6 +16,7 @@ public static class Game
 #pragma warning disable CA1416
     public static void Start()
     {
+        Console.Title = "Game";
         Console.WindowWidth = GameScreenWidth;
         Console.WindowHeight = GameScreenHeight;
         Console.SetBufferSize(GameScreenWidth, GameScreenHeight);
@@ -58,6 +59,11 @@ public static class Game
         for (var i = 0; i < 10; i++)
         {
             ObjectManager.Add(new Obstacle(10 + i, 15));
+        }
+
+        for (var i = 0; i < 5; i++)
+        {
+            ObjectManager.Add(new Enemy(10 + i * 5, 5));
         }
     }
 }

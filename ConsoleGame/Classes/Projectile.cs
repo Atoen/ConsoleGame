@@ -14,8 +14,6 @@ public class Projectile : IRemovable
     public readonly bool Hostile;
     public Position Pos;
 
-    public bool IsActive = true;
-
     public Projectile(ProjectileInfo info)
     {
         Pos.X = info.PosX;
@@ -46,8 +44,7 @@ public class Projectile : IRemovable
                     Remove();
                     return;
                 }
-
-                // Pos.Y += (int) _speed;
+                
                 Pos.AddFraction(0, _speed);
                 break;
 
@@ -57,8 +54,7 @@ public class Projectile : IRemovable
                     Remove();
                     return;
                 }
-
-                // Pos.Y -= (int) _speed;
+                
                 Pos.AddFraction(0, -_speed);
                 break;
 
@@ -69,10 +65,7 @@ public class Projectile : IRemovable
                     return;
                 }
 
-                // Pos.X -= (int) _speed;
                 Pos.AddFraction(-_speed, 0);
-
-                
                 break;
 
             case ProjectileDirection.Right:
@@ -81,20 +74,16 @@ public class Projectile : IRemovable
                     Remove();
                     return;
                 }
-
-                // Pos.X += (int) _speed;
-                Pos.AddFraction(_speed, 0);
-
                 
+                Pos.AddFraction(_speed, 0);
                 break;
         }
-
+        
         Draw();
     }
 
     public void Remove()
     {
-        IsActive = false;
         ObjectManager.MarkForRemoval(this);
     }
 }

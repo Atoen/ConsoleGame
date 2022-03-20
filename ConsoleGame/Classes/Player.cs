@@ -15,21 +15,17 @@ public class Player
 
     private const ConsoleColor Color = ConsoleColor.DarkGreen;
     private const ConsoleColor ProjectileColor = ConsoleColor.Cyan;
-
     private const int AttackDelay = 5;
 
-    // public Position Pos { get; }
-    // public int Health { get; }
-
-    public Position Pos;
-    public int Health = 5;
-
+    private Position _pos;
     private int _attackCd;
+    
+    public int Health = 5;
 
     public Player(int startX = 30, int startY = 20)
     {
-        Pos.X = startX;
-        Pos.Y = startY;
+        _pos.X = startX;
+        _pos.Y = startY;
     }
 
     public void PerformAction(Actions action)
@@ -42,20 +38,20 @@ public class Player
 
         switch (action)
         {
-            case Actions.Up when Pos.Y > 1:
-                Pos.Y--;
+            case Actions.Up when _pos.Y > 1:
+                _pos.Y--;
                 break;
 
-            case Actions.Down when Pos.Y < Game.GameScreenHeight - 4:
-                Pos.Y++;
+            case Actions.Down when _pos.Y < Game.GameScreenHeight - 4:
+                _pos.Y++;
                 break;
 
-            case Actions.Left when Pos.X > 1:
-                Pos.X--;
+            case Actions.Left when _pos.X > 1:
+                _pos.X--;
                 break;
 
-            case Actions.Right when Pos.X < Game.GameScreenWidth - 2:
-                Pos.X++;
+            case Actions.Right when _pos.X < Game.GameScreenWidth - 2:
+                _pos.X++;
                 break;
 
             case Actions.Shoot:
@@ -70,12 +66,12 @@ public class Player
 
         _attackCd = AttackDelay;
 
-        var info = new ProjectileInfo(Pos.X, Pos.Y - 1)
+        var info = new ProjectileInfo(_pos.X, _pos.Y - 1)
         {
             Symbol = ProjectileSymbol,
             Color = ProjectileColor,
             Hostile = false,
-            Direction = ProjectileDirection.Up,
+            Direction = ProjectileDirection.Up
         };
 
         ObjectManager.Add(new Projectile(info));
@@ -85,9 +81,9 @@ public class Player
     {
         for (var i = 0; i < Sprite.GetLength(0); i++)
         {
-            Display.Print(Pos.X + i - 1, Pos.Y - 1, Sprite[0, i], Color);
-            Display.Print(Pos.X + i - 1, Pos.Y, Sprite[1, i], Color);
-            Display.Print(Pos.X + i - 1, Pos.Y + 1, Sprite[2, i], Color);
+            Display.Print(_pos.X + i - 1, _pos.Y - 1, Sprite[0, i], Color);
+            Display.Print(_pos.X + i - 1, _pos.Y, Sprite[1, i], Color);
+            Display.Print(_pos.X + i - 1, _pos.Y + 1, Sprite[2, i], Color);
         }
     }
 
@@ -95,9 +91,9 @@ public class Player
     {
         for (var i = 0; i < Sprite.GetLength(0); i++)
         {
-            Display.ClearAt(Pos.X + i - 1, Pos.Y + 1);
-            Display.ClearAt(Pos.X + i - 1, Pos.Y);
-            Display.ClearAt(Pos.X + i - 1, Pos.Y - 1);
+            Display.ClearAt(_pos.X + i - 1, _pos.Y + 1);
+            Display.ClearAt(_pos.X + i - 1, _pos.Y);
+            Display.ClearAt(_pos.X + i - 1, _pos.Y - 1);
         }
     }
 }

@@ -5,11 +5,12 @@ namespace ConsoleGame.Classes;
 
 public class Obstacle : IRemovable
 {
-    private const char Symbol = '█';
+    private const char DamagedSymbol = '#';
     private const ConsoleColor Color = ConsoleColor.White;
 
-    private readonly Position _pos;
+    private char _symbol = '█';
     private int _health;
+    private readonly Position _pos;
 
     public Obstacle(int posX, int posY, int health = 2)
     {
@@ -20,7 +21,7 @@ public class Obstacle : IRemovable
 
     public void Draw()
     {
-        Display.Print(_pos.X, _pos.Y, Symbol, Color);
+        Display.Print(_pos.X, _pos.Y, _symbol, Color);
     }
 
     public bool HitBox(Projectile projectile)
@@ -34,6 +35,7 @@ public class Obstacle : IRemovable
     private void Hit(int damage)
     {
         _health -= damage;
+        _symbol = DamagedSymbol;
 
         if (_health < 1)
         {
@@ -46,8 +48,8 @@ public class Obstacle : IRemovable
         ObjectManager.MarkForRemoval(this);
     }
 
-    // Po zflagowaniu do usuniecia przeskodna nadal sie rysuje
-    // Usuwanie wykonywanie jest po updacie wszystkich obiektow
+    // Po zflagowaniu do usunięcia przeszkoda nadal sie rysuje
+    // Usuwanie wykonywanie jest po updacie wszystkich obiektów
     public void Clear()
     {
         Display.ClearAt(_pos.X, _pos.Y);

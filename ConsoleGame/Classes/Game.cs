@@ -8,11 +8,9 @@ public static class Game
 {
     public const int GameScreenWidth = 100;
     public const int GameScreenHeight = 30;
-    
     private const int TickSpeed = 50;
 
     private static readonly Player Player = new();
-
     private static bool _isRunning = true;
 
 #pragma warning disable CA1416
@@ -77,26 +75,29 @@ public static class Game
 
     private static void DrawSplashScreen()
     {
+        string[] splashScreen =
+        {
+            @"  _________    ___  ___    _______          ________     ________    _____ ______     _______",
+            @" |\___   ___\ |\  \|\  \  |\  ___  \       |\   ____\   |\   __  \  |\   _ \  _   \  |\  ___ \",
+            @" \|___ \  \_| \ \  \\\  \  \ \   __/|      \ \  \___|   \ \  \|\  \ \ \  \\\__\ \  \ \ \   __/|",
+            @"      \ \  \   \ \   __  \  \ \  \_|/__     \ \  \  ___  \ \   __  \ \ \  \\|__| \  \ \ \  \_|/__",
+            @"       \ \  \   \ \  \ \  \  \ \  \_|\ \     \ \  \|\  \  \ \  \ \  \ \ \  \    \ \  \ \ \  \_|\ \",
+            @"        \ \__\   \ \__\ \__\  \ \_______\     \ \_______\  \ \__\ \__\ \ \__\    \ \__\ \ \_______\",
+            @"         \|__|    \|__|\|__|   \|_______|      \|_______|   \|__|\|__|  \|__|     \|__|  \|_______|"
+        };
+
         Console.SetCursorPosition(0, 10);
         Console.ForegroundColor = ConsoleColor.Green;
         
-        string[] splashScreen =
-        {
-            @" _________    ___  ___    _______           ________     ________    _____ ______     _______",
-            @"|\___   ___\ |\  \|\  \  |\  ___  \        |\   ____\   |\   __  \  |\   _ \  _   \  |\  ___ \",
-            @"\|___ \  \_| \ \  \\\  \  \ \   __/|       \ \  \___|   \ \  \|\  \ \ \  \\\__\ \  \ \ \   __/|",
-            @"     \ \  \   \ \   __  \  \ \  \_|/__      \ \  \  ___  \ \   __  \ \ \  \\|__| \  \ \ \  \_|/__",
-            @"      \ \  \   \ \  \ \  \  \ \  \_|\ \      \ \  \|\  \  \ \  \ \  \ \ \  \    \ \  \ \ \  \_|\ \",
-            @"       \ \__\   \ \__\ \__\  \ \_______\      \ \_______\  \ \__\ \__\ \ \__\    \ \__\ \ \_______\",
-            @"        \|__|    \|__|\|__|   \|_______|       \|_______|   \|__|\|__|  \|__|     \|__|  \|_______|"
-        };
-
         foreach (var line in splashScreen)
         {
             Console.WriteLine(line);
         }
-
+        
         Console.ResetColor();
+        
+        Console.SetCursorPosition(40, 20);
+        Console.Write("Press any key");
         
         Console.ReadKey();
         Console.Clear();

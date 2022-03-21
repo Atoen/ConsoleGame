@@ -9,6 +9,7 @@ public static class ObjectManager
     private static readonly List<Projectile> Projectiles = new();
     private static readonly List<Obstacle> Obstacles = new();
     private static readonly List<Enemy> Enemies = new();
+    private static readonly List<EnemyGroup> EnemyGroups = new();
 
     public static void Update()
     {
@@ -24,7 +25,7 @@ public static class ObjectManager
         {
             enemy.Draw();
         }
-
+        
         foreach (var obstacle in Obstacles)
         {
             obstacle.Draw();
@@ -44,6 +45,11 @@ public static class ObjectManager
     public static void Add(Enemy enemy)
     {
         Enemies.Add(enemy);
+    }
+
+    public static void Add(EnemyGroup enemyGroup)
+    {
+        EnemyGroups.Add(enemyGroup);
     }
     
     public static void MarkForRemoval(IRemovable item)

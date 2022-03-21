@@ -6,7 +6,7 @@ public class Enemy : GameObject
     private const char ProjectileSymbol = '|';
     private const ConsoleColor ProjectileColor = ConsoleColor.White;
     private const float Speed = 0.5f;
-
+    
     public const int Score = 100;
 
     public Enemy(int posX, int posY, int health = 2) : base(posX, posY)
@@ -18,10 +18,23 @@ public class Enemy : GameObject
         Color = ConsoleColor.White;
     }
     
-    public void Move(int direction)
+    public void Move(EnemyDirection direction)
     {
         Clear();
-        Pos.AddFraction(Speed * direction, 0);
+        switch (direction)
+        {
+            case EnemyDirection.Left:
+                Pos.AddFraction(-Speed, 0);
+                break;
+            
+            case EnemyDirection.Right:
+                Pos.AddFraction(Speed, 0);
+                break;
+            
+            case EnemyDirection.Down:
+                Pos.Y++;
+                break;
+        }
     }
 
     public override bool HitBox(Projectile projectile)
@@ -45,4 +58,11 @@ public class Enemy : GameObject
         Display.ClearAt(Pos.X, Pos.Y);
         Display.ClearAt(Pos.X + 1, Pos.Y);
     }
+}
+
+public enum EnemyDirection
+{
+    Left,
+    Right,
+    Down
 }

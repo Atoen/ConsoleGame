@@ -11,6 +11,8 @@ public static class ObjectManager
     private static readonly List<Enemy> Enemies = new();
     private static readonly List<EnemyGroup> EnemyGroups = new();
 
+    private static int _backgroundTicks;
+
     public static void Update()
     {
         foreach (var projectile in Projectiles)
@@ -21,15 +23,18 @@ public static class ObjectManager
             MarkForRemoval(projectile);
         }
 
-        foreach (var enemy in Enemies)
+        if (_backgroundTicks % 5 == 0)
         {
-            enemy.Draw();
+            foreach (var enemy in Enemies) enemy.Move();
+
+            _backgroundTicks = 0;
         }
         
-        foreach (var obstacle in Obstacles)
-        {
-            obstacle.Draw();
-        }
+        foreach (var enemy in Enemies) enemy.Draw();
+
+        foreach (var obstacle in Obstacles) obstacle.Draw();
+
+        _backgroundTicks++;
     }
 
     public static void Add(Projectile projectile)
@@ -42,14 +47,18 @@ public static class ObjectManager
         Obstacles.Add(obstacle);
     }
 
-    public static void Add(Enemy enemy)
-    {
-        Enemies.Add(enemy);
-    }
-
     public static void Add(EnemyGroup enemyGroup)
     {
         EnemyGroups.Add(enemyGroup);
+
+        var startX = enemyGroup.StartX;
+        var startY = enemyGroup.StartY;
+        
+        for (var i = 0; i < enemyGroup.Width; i++)
+        for (var j = 0; j < enemyGroup.Height; j++)
+        {
+            Enemies.Add(new Enemy(startX + i * 4, startY + j * 2, ref enemyGroup.Synchronizer));
+        }
     }
     
     public static void MarkForRemoval(IRemovable item)
@@ -66,12 +75,12 @@ public static class ObjectManager
                 case Projectile projectile:
                     Projectiles.Remove(projectile);
                     break;
-                
+
                 case Obstacle obstacle:
                     obstacle.Clear();
                     Obstacles.Remove(obstacle);
                     break;
-                
+
                 case Enemy enemy:
                     enemy.Clear();
                     Enemies.Remove(enemy);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
@@ -22,7 +23,7 @@ public static class Game
         Console.SetBufferSize(GameScreenWidth, GameScreenHeight);
         Console.CursorVisible = false;
 
-        Input.QuitEvent += (sender, args) => _isRunning = false; 
+        Input.QuitEvent += (_, _) => _isRunning = false;
 
         DrawSplashScreen();
         
@@ -69,8 +70,14 @@ public static class Game
 
         for (var i = 0; i < 5; i++)
         {
-            ObjectManager.Add(new Enemy(10 + i * 5, 5));
+            // ObjectManager.Add(new Enemy(10 + i * 5, 5));
         }
+        
+        ObjectManager.Add(new EnemyGroup(5, 3, EnemyDirection.Left)
+        {
+            StartX = 5,
+            StartY = 5,
+        });
     }
 
     private static void DrawSplashScreen()
@@ -87,7 +94,7 @@ public static class Game
         };
 
         Console.SetCursorPosition(0, 10);
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ConsoleColor.Yellow;
         
         foreach (var line in splashScreen)
         {

@@ -7,32 +7,35 @@ public class Enemy : GameObject
     private const ConsoleColor ProjectileColor = ConsoleColor.White;
     private const float Speed = 0.5f;
     
+    private EnemyGroupSynchronizer _groupSynchronizer;
+    
     public const int Score = 100;
 
-    public Enemy(int posX, int posY, int health = 2) : base(posX, posY)
+    public Enemy(int posX, int posY, ref EnemyGroupSynchronizer groupSynchronizer, int health = 2) : base(posX, posY)
     {
         Pos.X = posX;
         Pos.Y = posY;
         
         Health = health;
         Color = ConsoleColor.White;
+        _groupSynchronizer = groupSynchronizer;
     }
     
-    public void Move(EnemyDirection direction)
+    public void Move()
     {
         Clear();
-        switch (direction)
+        switch (_groupSynchronizer.Direction)
         {
-            case EnemyDirection.Left:
+            case EnemyDirection.Left when Pos.X > 5:
                 Pos.AddFraction(-Speed, 0);
                 break;
             
-            case EnemyDirection.Right:
+            case EnemyDirection.Right when Pos.Y < Game.GameScreenWidth - 5:
                 Pos.AddFraction(Speed, 0);
                 break;
             
-            case EnemyDirection.Down:
-                Pos.Y++;
+            default:
+                _groupSynchronizer.ChangeDirection();
                 break;
         }
     }

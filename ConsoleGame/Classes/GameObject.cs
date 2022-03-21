@@ -39,13 +39,13 @@ public class GameObject : IRemovable
         }
     }
 
-    public void Remove()
-    {
-        ObjectManager.MarkForRemoval(this);
-    }
-
     public virtual void Clear()
     {
         Display.ClearAt(Pos.X, Pos.Y);
+    }
+
+    public void Remove()
+    {
+        ObjectManager.MarkForRemoval(this);
     }
 }

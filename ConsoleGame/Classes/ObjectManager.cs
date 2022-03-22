@@ -57,7 +57,7 @@ public static class ObjectManager
         for (var i = 0; i < enemyGroup.Width; i++)
         for (var j = 0; j < enemyGroup.Height; j++)
         {
-            Enemies.Add(new Enemy(startX + i * 4, startY + j * 2, ref enemyGroup.Synchronizer));
+            Enemies.Add(new Enemy(startX + i * 4, startY + j * 2, enemyGroup.Synchronizer));
         }
     }
     

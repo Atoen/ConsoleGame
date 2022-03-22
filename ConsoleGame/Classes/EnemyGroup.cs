@@ -4,10 +4,10 @@ public struct EnemyGroup
 {
     public int StartX;
     public int StartY;
-    public int Width;
-    public int Height;
+    public readonly int Width;
+    public readonly int Height;
 
-    public EnemyGroupSynchronizer Synchronizer;
+    public readonly EnemyGroupSynchronizer Synchronizer = new();
 
     public EnemyGroup(int width, int height, EnemyDirection direction = EnemyDirection.Right)
     {
@@ -31,12 +31,15 @@ public struct EnemyGroup
     }
 }
 
-public struct EnemyGroupSynchronizer
+public class EnemyGroupSynchronizer
 {
     public EnemyDirection Direction;
     
     public void ChangeDirection()
     {
+        
+        System.Diagnostics.Debug.WriteLine("changing direction");
+        
         if (Direction == EnemyDirection.Left)
         {
             Direction = EnemyDirection.Right;

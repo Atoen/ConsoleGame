@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using ConsoleGame.Structs;
+﻿using System.Diagnostics;
 
 namespace ConsoleGame.Classes;
 
@@ -68,12 +65,7 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        for (var i = 0; i < 5; i++)
-        {
-            // ObjectManager.Add(new Enemy(10 + i * 5, 5));
-        }
-        
-        ObjectManager.Add(new EnemyGroup(5, 3, EnemyDirection.Left)
+        ObjectManager.Add(new EnemyGroup(5, 3)
         {
             StartX = 5,
             StartY = 5,

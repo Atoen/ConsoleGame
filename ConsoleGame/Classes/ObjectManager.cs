@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.SymbolStore;
-using System.Security.Cryptography;
-using ConsoleGame.Interfaces;
+﻿using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
 
@@ -13,24 +11,9 @@ public static class ObjectManager
     private static readonly List<Enemy> Enemies = new();
     private static readonly List<EnemyGroup> EnemyGroups = new();
 
+    private const int EnemyMoveDelay = 2;
+
     private static int _backgroundTicks;
-
-    static ObjectManager()
-    {
-        Enemy.EnemyEvent += OnEnemyEvent;
-    }
-
-    private static void OnEnemyEvent(object? sender, EventArgs e)
-    {
-        if (sender is null) throw new NullReferenceException();
-
-        foreach (var enemy in Enemies)
-        {
-            enemy.MoveDown();
-        }
-        
-        (sender as EnemyGroupSynchronizer)?.ChangeDirection();
-    }
     
     public static void Update()
     {
@@ -42,13 +25,9 @@ public static class ObjectManager
             MarkForRemoval(projectile);
         }
 
-        if (_backgroundTicks % 5 == 0)
+        if (_backgroundTicks % EnemyMoveDelay == 0)
         {
-            foreach (var enemy in Enemies)
-                // Przerywanie pętli gdy następuje zmiana kierunku grupy
-                if (!enemy.Move()) break;
-
-            _backgroundTicks = 0;
+            MoveEnemies();
         }
         
         foreach (var enemy in Enemies) enemy.Draw();
@@ -110,6 +89,19 @@ public static class ObjectManager
         }
         
         Removables.Clear();
+    }
+
+    private static void MoveEnemies()
+    {
+        foreach (var enemyGroup in EnemyGroups)
+        {
+            if (enemyGroup.CheckBoundary())
+                enemyGroup.Synchronizer.Direction = EnemyDirection.Down;
+        }
+
+        foreach (var enemy in Enemies) enemy.Move();
+
+        _backgroundTicks = 0;
     }
 
     private static bool CheckCollision(Projectile projectile)

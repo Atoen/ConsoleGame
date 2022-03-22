@@ -2,7 +2,7 @@
 
 namespace ConsoleGame.Classes;
 
-public struct EnemyGroup
+public class EnemyGroup
 {
     public int StartX;
     public int StartY;
@@ -20,55 +20,54 @@ public struct EnemyGroup
         Height = height;
         StartX = 0;
         StartY = 0;
-        
+
         Synchronizer.Direction = direction;
 
         _upperLeftCorner = (StartX, StartY);
-        _lowerRightCorner = (StartX + width * 4, StartY + Height * 2);
+        _lowerRightCorner = (StartX + width * 5, StartY + Height * 2);
     }
 
-    public void Move()
+    public bool CheckBoundary()
     {
-        
-        
         switch (Synchronizer)
         {
-            case {Direction: EnemyDirection.Left}:
-                _upperLeftCorner.X--;
-                _lowerRightCorner.X--;
+            case {Direction: EnemyDirection.Left} when _upperLeftCorner.X > 5:
+                _upperLeftCorner.AddFraction(-0.5f, 0);
+                _lowerRightCorner.AddFraction(-0.5f, 0);
                 break;
 
-            case {Direction: EnemyDirection.Right}:
-                _upperLeftCorner.X++;
-                _lowerRightCorner.X++;
+            case {Direction: EnemyDirection.Right} when _lowerRightCorner.X < Game.GameScreenWidth - 5:
+                _upperLeftCorner.AddFraction(0.5f, 0);
+                _lowerRightCorner.AddFraction(0.5f, 0);
                 break;
-        }
-    }
+            
+            case {Direction: EnemyDirection.Down}:
+                Synchronizer.ResumeMoving();
+                break;
 
-    public void ChangeDirection()
-    {
-        if (Synchronizer.Direction == EnemyDirection.Left)
-        {
-            Synchronizer.Direction = EnemyDirection.Right;
-            return;
+            default:
+                Synchronizer.ChangeDirection();
+                return true;
         }
 
-        Synchronizer.Direction = EnemyDirection.Left;
+        return false;
     }
 }
 
 public class EnemyGroupSynchronizer
 {
     public EnemyDirection Direction;
+    private EnemyDirection _directionAfterDown;
     
     public void ChangeDirection()
     {
-        if (Direction == EnemyDirection.Left)
-        {
-            Direction = EnemyDirection.Right;
-            return;
-        }
-        
-        Direction = EnemyDirection.Left;
+        Direction = Direction == EnemyDirection.Left ? EnemyDirection.Right : EnemyDirection.Left;
+
+        _directionAfterDown = Direction;
+    }
+
+    public void ResumeMoving()
+    {
+        Direction = _directionAfterDown;
     }
 }

@@ -8,6 +8,7 @@ public class Enemy : GameObject
     private const float Speed = 0.5f;
     
     private readonly EnemyGroupSynchronizer _groupSynchronizer;
+    public static event EventHandler EnemyEvent = delegate {  };
 
     public static int Score => 100;
 
@@ -21,7 +22,7 @@ public class Enemy : GameObject
         Color = ConsoleColor.White;
     }
     
-    public void Move()
+    public bool Move()
     {
         Clear();
         switch (_groupSynchronizer.Direction)
@@ -34,10 +35,20 @@ public class Enemy : GameObject
                 Pos.AddFraction(Speed, 0);
                 break;
             
+            // Zmiana kierunku
             default:
-                _groupSynchronizer.ChangeDirection();
-                break;
+                // _groupSynchronizer.ChangeDirection();
+                EnemyEvent(_groupSynchronizer, EventArgs.Empty);
+                return false;
         }
+
+        return true;
+    }
+
+    public void MoveDown()
+    {
+        Clear();
+        Pos.Y++;
     }
 
     public override bool HitBox(Projectile projectile)

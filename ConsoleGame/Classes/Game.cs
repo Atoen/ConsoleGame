@@ -65,7 +65,7 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        ObjectManager.Add(new EnemyGroup(5, 3)
+        ObjectManager.Add(new EnemyGroup(5, 3, EnemyDirection.Left)
         {
             StartX = 5,
             StartY = 5,

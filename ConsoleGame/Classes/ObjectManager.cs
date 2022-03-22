@@ -1,4 +1,6 @@
-﻿using ConsoleGame.Interfaces;
+﻿using System.Diagnostics.SymbolStore;
+using System.Security.Cryptography;
+using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
 
@@ -13,6 +15,23 @@ public static class ObjectManager
 
     private static int _backgroundTicks;
 
+    static ObjectManager()
+    {
+        Enemy.EnemyEvent += OnEnemyEvent;
+    }
+
+    private static void OnEnemyEvent(object? sender, EventArgs e)
+    {
+        if (sender is null) throw new NullReferenceException();
+
+        foreach (var enemy in Enemies)
+        {
+            enemy.MoveDown();
+        }
+        
+        (sender as EnemyGroupSynchronizer)?.ChangeDirection();
+    }
+    
     public static void Update()
     {
         foreach (var projectile in Projectiles)
@@ -25,7 +44,9 @@ public static class ObjectManager
 
         if (_backgroundTicks % 5 == 0)
         {
-            foreach (var enemy in Enemies) enemy.Move();
+            foreach (var enemy in Enemies)
+                // Przerywanie pętli gdy następuje zmiana kierunku grupy
+                if (!enemy.Move()) break;
 
             _backgroundTicks = 0;
         }

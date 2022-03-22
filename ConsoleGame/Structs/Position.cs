@@ -32,6 +32,18 @@ public struct Position
     {
         return left.X != right.X || left.Y != right.Y;
     }
+
+    public static implicit operator Position((int x, int y) value)
+    {
+        var (x, y) = value;
+        Position pos = new()
+        {
+            X = x,
+            Y = y
+        };
+
+        return pos;
+    }
     
     public void AddFraction(float floatX, float floatY)
     {

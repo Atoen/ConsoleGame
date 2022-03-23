@@ -1,23 +1,28 @@
 ﻿using System.Diagnostics;
+using ConsoleGame.Classes.GameObjects;
 
 namespace ConsoleGame.Classes;
 
 public static class Game
 {
     public const int GameScreenWidth = 100;
-    public const int GameScreenHeight = 30;
+    public const int GameScreenHeight = 25;
+    public const int InterfaceHeight = 5;
     private const int TickSpeed = 50;
 
     private static readonly Player Player = new();
     private static bool _isRunning = true;
+
+    public static int PLayerHealth => Player.CurrentHealth;
+    public static int Score { get; }
 
 #pragma warning disable CA1416
     public static void Start()
     {
         Console.Title = "Game";
         Console.WindowWidth = GameScreenWidth;
-        Console.WindowHeight = GameScreenHeight;
-        Console.SetBufferSize(GameScreenWidth, GameScreenHeight);
+        Console.WindowHeight = GameScreenHeight + InterfaceHeight;
+        Console.SetBufferSize(GameScreenWidth, GameScreenHeight + InterfaceHeight);
         Console.CursorVisible = false;
 
         Input.QuitEvent += (_, _) => _isRunning = false;
@@ -27,6 +32,8 @@ public static class Game
         // Display.Update();
 
         DrawSplashScreen();
+        
+        GameInterface.Draw();
 
         PrepareField();
         

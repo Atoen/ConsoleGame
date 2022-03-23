@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Interfaces;
+﻿using ConsoleGame.Classes.GameObjects;
+using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
 

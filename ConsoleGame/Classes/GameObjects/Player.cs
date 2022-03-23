@@ -1,6 +1,6 @@
 ﻿using ConsoleGame.Structs;
 
-namespace ConsoleGame.Classes;
+namespace ConsoleGame.Classes.GameObjects;
 
 public class Player : GameObject
 {
@@ -16,6 +16,8 @@ public class Player : GameObject
     private const int AttackDelay = 5;
 
     private int _attackCd;
+
+    public int CurrentHealth => Health;
 
     public Player(int posX = 30, int posY = 20) : base(posX, posY)
     {

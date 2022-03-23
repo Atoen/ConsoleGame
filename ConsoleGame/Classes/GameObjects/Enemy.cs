@@ -1,6 +1,6 @@
 ﻿using ConsoleGame.Structs;
 
-namespace ConsoleGame.Classes;
+namespace ConsoleGame.Classes.GameObjects;
 
 public class Enemy : GameObject
 {

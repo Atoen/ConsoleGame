@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.SymbolStore;
-
-namespace ConsoleGame.Classes;
+﻿namespace ConsoleGame.Classes.GameObjects;
 
 public class Obstacle : GameObject
 {

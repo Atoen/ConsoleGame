@@ -22,6 +22,10 @@ public static class Game
 
         Input.QuitEvent += (_, _) => _isRunning = false;
 
+        // for (var i = 0; i < byte.MaxValue; i++)
+        //     Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
+        // Display.Update();
+
         DrawSplashScreen();
 
         PrepareField();
@@ -52,7 +56,7 @@ public static class Game
             stopwatch.Stop();
             var timeToSleep = Math.Max(TickSpeed - (int) stopwatch.ElapsedMilliseconds, 0);
             stopwatch.Reset();
-
+            
             Thread.Sleep(timeToSleep);
         }
         
@@ -66,7 +70,7 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        ObjectManager.Add(new EnemyGroup(5, 3)
+        ObjectManager.Add(new EnemyGroup(15, 4)
         {
             StartX = 5,
             StartY = 5,

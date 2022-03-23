@@ -6,9 +6,9 @@ public class Player : GameObject
 {
     private static readonly char[,] Sprite =
     {
-        {' ', '^', ' '},
+        {' ', (char) 30, ' '},
         {'/', (char) 254, '\\'},
-        {'|', ' ', '|'}
+        {(char) 19, ' ', (char) 19}
     };
     
     private const char ProjectileSymbol = '|';
@@ -40,7 +40,7 @@ public class Player : GameObject
                 Pos.Y--;
                 break;
 
-            case Actions.Down when Pos.Y < Game.GameScreenHeight - 4:
+            case Actions.Down when Pos.Y < Game.GameScreenHeight - 2:
                 Pos.Y++;
                 break;
 

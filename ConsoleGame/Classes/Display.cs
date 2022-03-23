@@ -8,8 +8,8 @@ public static class Display
     private static readonly SafeFileHandle SafeFileHandle;
     
     private static readonly CharInfo[] Buffer = new CharInfo[Game.GameScreenWidth * Game.GameScreenHeight];
-    private static readonly Coord ScreenSize = new Coord() {X = Game.GameScreenWidth, Y = Game.GameScreenHeight};
-    private static readonly Coord SecondCoord = new Coord() {X = 0, Y = 0};
+    private static readonly Coord ScreenSize = new() {X = Game.GameScreenWidth, Y = Game.GameScreenHeight};
+    private static readonly Coord SecondCoord = new() {X = 0, Y = 0};
     
     private static DisplayRect _screenRect = new()
         {Left = 0, Top = 0, Right = Game.GameScreenWidth, Bottom = Game.GameScreenHeight};
@@ -47,9 +47,9 @@ public static class Display
         var index = posX + Game.GameScreenWidth * posY;
         var symbolByte = (byte) symbol;
 
-        if (Buffer[index].Char == symbolByte) return;
+        if (Buffer[index].symbol == symbolByte) return;
         
-        Buffer[index].Char = symbolByte;
+        Buffer[index].symbol = symbolByte;
         Buffer[index].Color = (short) color;
 
         _modified = true;
@@ -59,9 +59,9 @@ public static class Display
     {
         var index = posX + Game.GameScreenWidth * posY;
         
-        if (Buffer[index].Char == 32) return;
+        if (Buffer[index].symbol == 32) return;
 
-        Buffer[index].Char = 32; // Spacja ' '
+        Buffer[index].symbol = 32; // Spacja ' '
         Buffer[index].Color = 15; // Biały
 
         _modified = true;
@@ -75,7 +75,7 @@ public static class Display
         [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
         [MarshalAs(UnmanagedType.U4)] int flags,
         IntPtr template);
-    
+
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool WriteConsoleOutput(
         SafeFileHandle hConsoleOutput,
@@ -94,7 +94,7 @@ public static class Display
     [StructLayout(LayoutKind.Explicit)]
     private struct CharInfo
     {
-        [FieldOffset(0)] public byte Char;
+        [FieldOffset(0)] public byte symbol;
         [FieldOffset(2)] public short Color;
     }
     

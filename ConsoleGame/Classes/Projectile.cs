@@ -31,7 +31,7 @@ public class Projectile : GameObject
         switch (_direction)
         {
             case ProjectileDirection.Down:
-                if (Pos.Y >= Game.GameScreenHeight - 2)
+                if (Pos.Y >= Game.GameScreenHeight - 1)
                 {
                     Remove();
                     return;

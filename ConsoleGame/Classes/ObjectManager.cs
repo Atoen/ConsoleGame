@@ -11,7 +11,7 @@ public static class ObjectManager
     private static readonly List<Enemy> Enemies = new();
     private static readonly List<EnemyGroup> EnemyGroups = new();
 
-    private const int EnemyMoveDelay = 2;
+    private const int EnemyMoveDelay = 5;
 
     private static int _backgroundTicks;
     
@@ -111,6 +111,8 @@ public static class ObjectManager
             if (obstacle.HitBox(projectile)) return true;
         }
 
+        if (projectile.Hostile) return false;
+        
         foreach (var enemy in Enemies)
         {
             if (enemy.HitBox(projectile)) return true;

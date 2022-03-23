@@ -1,13 +1,17 @@
-﻿namespace ConsoleGame.Classes;
+﻿using ConsoleGame.Structs;
+
+namespace ConsoleGame.Classes;
 
 public class Enemy : GameObject
 {
     private static readonly char[] Sprite = {'<', 'O', '>'};
     private const char ProjectileSymbol = '|';
-    private const ConsoleColor ProjectileColor = ConsoleColor.White;
+    private const ConsoleColor ProjectileColor = ConsoleColor.Red;
     private const float Speed = 0.5f;
+    private const int AttackDelay = 10;
     
     private readonly EnemyGroupSynchronizer _groupSynchronizer;
+    private int _attackCd = AttackDelay;
 
     public static int Score => 100;
 
@@ -18,7 +22,7 @@ public class Enemy : GameObject
         Pos.Y = posY;
         
         Health = health;
-        Color = ConsoleColor.White;
+        Color = ConsoleColor.Yellow;
     }
     
     public void Move()
@@ -38,7 +42,33 @@ public class Enemy : GameObject
             case EnemyDirection.Down:
                 Pos.Y++;
                 break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+        
+        if (_attackCd < 1)
+        {
+            Attack();
+            return;
+        }
+
+        _attackCd--;
+    }
+
+    private void Attack()
+    {
+        _attackCd = AttackDelay;
+        
+        var info = new ProjectileInfo(Pos.X, Pos.Y)
+        {
+            Symbol = ProjectileSymbol,
+            Color = ProjectileColor,
+            Hostile = true,
+            Direction = ProjectileDirection.Down
+        };
+        
+        ObjectManager.Add(new Projectile(info));
     }
 
     public override bool HitBox(Projectile projectile)

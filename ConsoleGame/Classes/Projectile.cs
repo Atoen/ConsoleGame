@@ -31,7 +31,7 @@ public class Projectile : GameObject
         switch (_direction)
         {
             case ProjectileDirection.Down:
-                if (Pos.Y >= Game.GameScreenHeight - 1)
+                if (Pos.Y >= Game.GameScreenHeight - 2)
                 {
                     Remove();
                     return;
@@ -69,6 +69,9 @@ public class Projectile : GameObject
                 
                 Pos.AddFraction(_speed, 0);
                 break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
         }
         
         Draw();

@@ -1,54 +1,109 @@
-﻿namespace ConsoleGame.Classes;
+﻿using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+
+namespace ConsoleGame.Classes;
 
 public static class Display
 {
-    private static readonly char[,] ScreenBuffer = new char[Game.GameScreenWidth, Game.GameScreenHeight];
-    private static readonly char[,] ScreenBufferOld = new char[Game.GameScreenWidth, Game.GameScreenHeight];
-    private static readonly ConsoleColor[,] ColorBuffer = new ConsoleColor[Game.GameScreenWidth, Game.GameScreenHeight];
+    private static readonly SafeFileHandle SafeFileHandle;
+    
+    private static readonly CharInfo[] Buffer = new CharInfo[Game.GameScreenWidth * Game.GameScreenHeight];
+    private static readonly Coord ScreenSize = new Coord() {X = Game.GameScreenWidth, Y = Game.GameScreenHeight};
+    private static readonly Coord SecondCoord = new Coord() {X = 0, Y = 0};
+    
+    private static DisplayRect _screenRect = new()
+        {Left = 0, Top = 0, Right = Game.GameScreenWidth, Bottom = Game.GameScreenHeight};
 
     private static bool _modified;
+    
+    static Display()
+    { 
+        SafeFileHandle = CreateFile("CONOUT$",
+            0x40000000,
+            2,
+            IntPtr.Zero,
+            FileMode.Open,
+            0,
+            IntPtr.Zero);
+
+        if (SafeFileHandle.IsInvalid) throw new IOException("Console buffer file is invalid");
+    }
 
     public static void Update()
     {
         if (!_modified) return;
 
-        for (var i = 0; i < Game.GameScreenWidth; i++)
-        for (var j = 0; j < Game.GameScreenHeight; j++)
-        {
-            if (ScreenBuffer[i, j] == ScreenBufferOld[i, j]) continue;
-
-            Console.SetCursorPosition(i, j);
-            Console.ForegroundColor = ColorBuffer[i, j];
-            Console.WriteLine(ScreenBuffer[i, j]);
-
-            ScreenBufferOld[i, j] = ScreenBuffer[i, j];
-        }
+        WriteConsoleOutput(SafeFileHandle,
+            Buffer,
+            ScreenSize,
+            SecondCoord,
+            ref _screenRect);
 
         _modified = false;
     }
 
-    public static void Print(int posX, int posY, char symbol)
-    {
-        if (ScreenBuffer[posX, posY] == symbol) return;
-
-        ScreenBuffer[posX, posY] = symbol;
-        _modified = true;
-    }
-
     public static void Print(int posX, int posY, char symbol, ConsoleColor color)
     {
-        if (ScreenBuffer[posX, posY] == symbol) return;
+        var index = posX + Game.GameScreenWidth * posY;
+        var symbolByte = (byte) symbol;
 
-        ScreenBuffer[posX, posY] = symbol;
-        ColorBuffer[posX, posY] = color;
+        if (Buffer[index].Char == symbolByte) return;
+        
+        Buffer[index].Char = symbolByte;
+        Buffer[index].Color = (short) color;
+
         _modified = true;
     }
-
+    
     public static void ClearAt(int posX, int posY)
     {
-        if (ScreenBuffer[posX, posY] == ' ') return;
+        var index = posX + Game.GameScreenWidth * posY;
+        
+        if (Buffer[index].Char == 32) return;
 
-        ScreenBuffer[posX, posY] = ' ';
+        Buffer[index].Char = 32; // Spacja ' '
+        Buffer[index].Color = 15; // Biały
+
         _modified = true;
+    }
+        
+    [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern SafeFileHandle CreateFile(string fileName,
+        [MarshalAs(UnmanagedType.U4)] uint fileAccess,
+        [MarshalAs(UnmanagedType.U4)] uint fileShare,
+        IntPtr securityAttributes,
+        [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
+        [MarshalAs(UnmanagedType.U4)] int flags,
+        IntPtr template);
+    
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool WriteConsoleOutput(
+        SafeFileHandle hConsoleOutput,
+        CharInfo[] lpBuffer,
+        Coord dwBufferSize,
+        Coord dwBufferCoord,
+        ref DisplayRect lpWriteRegion);
+    
+    [StructLayout(LayoutKind.Sequential)]
+    private struct Coord
+    {
+        public short X;
+        public short Y;
+    }
+    
+    [StructLayout(LayoutKind.Explicit)]
+    private struct CharInfo
+    {
+        [FieldOffset(0)] public byte Char;
+        [FieldOffset(2)] public short Color;
+    }
+    
+    [StructLayout(LayoutKind.Sequential)]
+    private struct DisplayRect
+    {
+        public short Left;
+        public short Top;
+        public short Right;
+        public short Bottom;
     }
 }

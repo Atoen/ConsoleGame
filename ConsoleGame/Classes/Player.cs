@@ -7,7 +7,7 @@ public class Player : GameObject
     private static readonly char[,] Sprite =
     {
         {' ', '^', ' '},
-        {'/', '■', '\\'},
+        {'/', (char) 254, '\\'},
         {'|', ' ', '|'}
     };
     

@@ -23,14 +23,15 @@ public static class Game
         Input.QuitEvent += (_, _) => _isRunning = false;
 
         DrawSplashScreen();
-        
+
         PrepareField();
         
         var inputThread = new Thread(Input.GetInput);
         inputThread.Start();
+        
         MainLoop();
     }
-
+    
     private static void MainLoop()
     {
         Stopwatch stopwatch = new();

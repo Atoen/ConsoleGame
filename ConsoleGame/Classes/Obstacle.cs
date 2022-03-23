@@ -10,7 +10,7 @@ public class Obstacle : GameObject
         Pos.Y = posY;
         Health = health;
 
-        Symbol = '█';
+        Symbol = (char) 219; // █
         Color = ConsoleColor.White;
     }
 }

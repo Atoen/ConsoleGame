@@ -71,7 +71,7 @@ public class Enemy : GameObject
         ObjectManager.Add(new Projectile(info));
     }
 
-    public override bool HitBox(Projectile projectile)
+    public override bool HitBox(ref Projectile projectile)
     {
         if (projectile.Position.Y != Pos.Y || !(MathF.Abs(projectile.Position.X - Pos.X) <= 1)) return false;
 

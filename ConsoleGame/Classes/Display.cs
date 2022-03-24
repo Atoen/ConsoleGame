@@ -10,7 +10,7 @@ public static class Display
     private static readonly CharInfo[] Buffer = new CharInfo[Game.GameScreenWidth * Game.GameScreenHeight];
     private static readonly Coord ScreenSize = new() {X = Game.GameScreenWidth, Y = Game.GameScreenHeight};
     private static readonly Coord SecondCoord = new() {X = 0, Y = 0};
-    
+
     private static DisplayRect _screenRect = new()
         {Left = 0, Top = 0, Right = Game.GameScreenWidth, Bottom = Game.GameScreenHeight};
 

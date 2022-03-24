@@ -12,12 +12,17 @@ public static class ObjectManager
     private static readonly List<Enemy> Enemies = new();
     private static readonly List<EnemyGroup> EnemyGroups = new();
 
-    private const int EnemyMoveDelay = 5;
+    private static readonly Player Player = new();
 
+    private const int EnemyMoveDelay = 5;
     private static int _backgroundTicks;
+
+    public static int PlayerHealth => Player.CurrentHealth;
     
     public static void Update()
     {
+        Player.PerformAction(Input.Get);
+        
         foreach (var projectile in Projectiles)
         {
             projectile.Move();
@@ -34,6 +39,8 @@ public static class ObjectManager
         foreach (var enemy in Enemies) enemy.Draw();
 
         foreach (var obstacle in Obstacles) obstacle.Draw();
+
+        Player.Draw();
 
         _backgroundTicks++;
     }
@@ -83,6 +90,9 @@ public static class ObjectManager
                     break;
 
                 case Enemy enemy:
+
+                    Game.Score += Enemy.Score;
+                    
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
@@ -109,16 +119,22 @@ public static class ObjectManager
     {
         foreach (var obstacle in Obstacles)
         {
-            if (obstacle.HitBox(projectile)) return true;
+            if (obstacle.HitBox(ref projectile)) return true;
         }
 
-        if (projectile.Hostile) return false;
-        
-        foreach (var enemy in Enemies)
+        if (projectile.Hostile)
         {
-            if (enemy.HitBox(projectile)) return true;
+            if (Player.HitBox(ref projectile)) return true;
         }
 
+        else
+        {
+            foreach (var enemy in Enemies)
+            {
+                if (enemy.HitBox(ref projectile)) return true;
+            }
+        }
+        
         return false;
     }
 }

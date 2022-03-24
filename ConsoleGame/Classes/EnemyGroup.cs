@@ -25,19 +25,19 @@ public class EnemyGroup
         Synchronizer.Direction = direction;
 
         _upperLeftCorner = (StartX, StartY);
-        _lowerRightCorner = (StartX + width * 5 - 5, StartY + Height * 2);
+        _lowerRightCorner = (StartX + width * 5, StartY + Height * 2);
     }
 
     public bool CheckBoundary()
     {
         switch (Synchronizer)
         {
-            case {Direction: EnemyDirection.Left} when _upperLeftCorner.X > 1:
+            case {Direction: EnemyDirection.Left} when _upperLeftCorner.X > 2:
                 _upperLeftCorner.AddFraction(-0.5f, 0);
                 _lowerRightCorner.AddFraction(-0.5f, 0);
                 break;
 
-            case {Direction: EnemyDirection.Right} when _lowerRightCorner.X < Game.GameScreenWidth - 1:
+            case {Direction: EnemyDirection.Right} when _lowerRightCorner.X < Game.GameScreenWidth - 2:
                 _upperLeftCorner.AddFraction(0.5f, 0);
                 _lowerRightCorner.AddFraction(0.5f, 0);
                 break;

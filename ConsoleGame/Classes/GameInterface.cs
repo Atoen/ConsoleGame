@@ -1,42 +1,50 @@
-﻿using ConsoleGame.Structs;
+﻿using ConsoleGame.Classes.GameObjects;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
 
 public static class GameInterface
 {
-    private static Position _healthPos = (20, 2);
-    private static Position _scorePos = (80, 2);
-    
+    private static readonly Position HealthPos = (20, 2 + Game.GameScreenHeight);
+    private static readonly Position ScorePos = (80, 2 + Game.GameScreenHeight);
+
+    static GameInterface()
+    {
+        Game.InterfaceEvent += (_, _) => Update();
+        Player.HitEvent += (_, _) => Update();
+    }
+
     public static void Draw()
     {
         Console.BackgroundColor = ConsoleColor.DarkBlue;
         Console.SetCursorPosition(0, Game.GameScreenHeight);
         
-        for (var i = 0; i < Game.GameScreenWidth * Game.InterfaceHeight; i++)
+        // Zapełnianie dołu ekranu
+        for (var i = 0; i < Game.InterfaceHeight; i++)
         {
-            Console.Write(' ');
+            Console.Write(new string(' ', Game.GameScreenWidth));
         }
+
+        Console.SetCursorPosition(HealthPos.X - 8, HealthPos.Y);
+        Console.Write($"Health: {ObjectManager.PlayerHealth}");
         
-        Console.SetCursorPosition(_healthPos.X - 10, _healthPos.Y + Game.GameScreenHeight);
-        Console.Write($"Health: {Game.PLayerHealth}");
-        
-        Console.SetCursorPosition(_scorePos.X - 8, _scorePos.Y + Game.GameScreenHeight);
+        Console.SetCursorPosition(ScorePos.X - 7, ScorePos.Y);
         Console.Write("Score: 0");
         
+        // Ostatni kwadrat po prawej
         Console.ResetColor();
         Console.SetCursorPosition(Game.GameScreenWidth - 1, Game.GameScreenHeight - 1);
         Console.Write(' ');
-
+        
+        Console.BackgroundColor = ConsoleColor.DarkBlue;
     }
 
-    public static void Update()
+    private static void Update()
     {
-        Console.BackgroundColor = ConsoleColor.DarkBlue;
+        Console.SetCursorPosition(HealthPos.X, HealthPos.Y);
+        Console.Write(ObjectManager.PlayerHealth);
 
-        Console.SetCursorPosition(_healthPos.X, _healthPos.Y);
-        Console.Write(Game.PLayerHealth);
-        
-        Console.SetCursorPosition(_scorePos.X, _scorePos.Y);
+        Console.SetCursorPosition(ScorePos.X, ScorePos.Y);
         Console.Write(Game.Score);
     }
 }

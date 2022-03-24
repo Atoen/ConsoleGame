@@ -21,7 +21,7 @@ public class GameObject : IRemovable
         Display.Print(Pos.X, Pos.Y, Symbol, Color);
     }
 
-    public virtual bool HitBox(Projectile projectile)
+    public virtual bool HitBox(ref Projectile projectile)
     {
         if (projectile.Pos != Pos) return false;
         

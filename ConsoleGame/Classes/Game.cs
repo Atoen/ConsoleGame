@@ -9,15 +9,24 @@ public static class Game
     public const int GameScreenHeight = 25;
     public const int InterfaceHeight = 5;
     private const int TickSpeed = 50;
-
-    private static readonly Player Player = new();
+    
     private static bool _isRunning = true;
+    private static int _score;
+    public static event EventHandler? InterfaceEvent;
+    
+    public static int Score
+    {
+        get => _score;
 
-    public static int PLayerHealth => Player.CurrentHealth;
-    public static int Score { get; }
+        set
+        {
+            _score = value;
+            InterfaceEvent?.Invoke(null, EventArgs.Empty);
+        }
+    }
 
 #pragma warning disable CA1416
-    public static void Start()
+        public static void Start()
     {
         Console.Title = "Game";
         Console.WindowWidth = GameScreenWidth;
@@ -26,13 +35,21 @@ public static class Game
         Console.CursorVisible = false;
 
         Input.QuitEvent += (_, _) => _isRunning = false;
+        
 
         // for (var i = 0; i < byte.MaxValue; i++)
-        //     Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
+        // {
+        //     var j = 5 * i;
+        //     Display.Print(j % GameScreenWidth, j / GameScreenWidth, (char) (i / 100 + 48), ConsoleColor.White);
+        //     Display.Print((j + 1) % GameScreenWidth, (j + 1) / GameScreenWidth, (char) ((i / 10) % 10 + 48), ConsoleColor.White);
+        //     Display.Print((j + 2) % GameScreenWidth, (j + 2) / GameScreenWidth, (char) ((i) % 10 + 48), ConsoleColor.White);
+        //     Display.Print((j + 3) % GameScreenWidth, (j + 3) / GameScreenWidth, (char) i, ConsoleColor.White);
+        // }
         // Display.Update();
-
-        DrawSplashScreen();
+        // Console.ReadKey();
         
+        DrawSplashScreen();
+
         GameInterface.Draw();
 
         PrepareField();
@@ -51,12 +68,8 @@ public static class Game
         {
             stopwatch.Start();
 
-            Player.PerformAction(Input.Get);
-            
             ObjectManager.Update();
             ObjectManager.CleanUp();
-            
-            Player.Draw();
             
             Display.Update();
             
@@ -77,7 +90,7 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        ObjectManager.Add(new EnemyGroup(15, 4)
+        ObjectManager.Add(new EnemyGroup(5, 2)
         {
             StartX = 5,
             StartY = 5,

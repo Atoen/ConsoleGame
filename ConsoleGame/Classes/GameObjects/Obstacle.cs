@@ -15,7 +15,7 @@ public class Obstacle : GameObject
         Color = ConsoleColor.White;
     }
 
-    public override bool HitBox(Projectile projectile)
+    public override bool HitBox(ref Projectile projectile)
     {
         if (projectile.Position != Pos) return false;
 

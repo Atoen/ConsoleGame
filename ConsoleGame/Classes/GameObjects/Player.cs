@@ -17,6 +17,7 @@ public class Player : GameObject
 
     private int _attackCd;
 
+    public static event EventHandler? HitEvent; 
     public int CurrentHealth => Health;
 
     public Player(int posX = 30, int posY = 20) : base(posX, posY)
@@ -87,12 +88,13 @@ public class Player : GameObject
         }
     }
 
-    public override bool HitBox(Projectile projectile)
+    public override bool HitBox(ref Projectile projectile)
     {
         if (!(MathF.Abs(Pos.Y - projectile.Position.Y) <= 1) ||
             !(MathF.Abs(Pos.X - projectile.Position.X) <= 1)) return false;
         
         Hit(projectile.Damage);
+        HitEvent?.Invoke(null, EventArgs.Empty);
         return true;
     }
 

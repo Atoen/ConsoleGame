@@ -5,7 +5,7 @@ public static class Input
     private const ConsoleKey QuitKey = ConsoleKey.Escape;
     private static Actions _action;
 
-    public static event EventHandler QuitEvent = delegate {};
+    public static event EventHandler? QuitEvent;
     
     public static Actions Get
     {
@@ -37,7 +37,7 @@ public static class Input
             };
         } while (input.Key != QuitKey);
         
-        QuitEvent(null, EventArgs.Empty);
+        QuitEvent?.Invoke(null, EventArgs.Empty);
     }
 }
 

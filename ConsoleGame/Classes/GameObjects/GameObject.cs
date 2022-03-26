@@ -3,7 +3,7 @@ using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects;
 
-public class GameObject : IRemovable
+public abstract class GameObject : IRemovable
 {
     protected char Symbol;
     protected ConsoleColor Color;
@@ -44,7 +44,7 @@ public class GameObject : IRemovable
         Display.ClearAt(Pos.X, Pos.Y);
     }
 
-    public void Remove()
+    public virtual void Remove()
     {
         ObjectManager.MarkForRemoval(this);
     }

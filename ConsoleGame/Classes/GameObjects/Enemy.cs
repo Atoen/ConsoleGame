@@ -4,37 +4,43 @@ namespace ConsoleGame.Classes.GameObjects;
 
 public class Enemy : GameObject
 {
+    public static int Count;
+
     private static readonly char[] Sprite = {'<', 'O', '>'};
     private const char ProjectileSymbol = '|';
     private const ConsoleColor ProjectileColor = ConsoleColor.Red;
-    private const float Speed = 0.5f;
     private const int AttackDelay = 10;
+    private const float Speed = 0.5f;
+
+    public bool isActive = true;
     
-    private readonly EnemyGroupSynchronizer _groupSynchronizer;
+    // private readonly EnemyGroupSynchronizer _groupSynchronizer;
     private int _attackCd = AttackDelay;
 
     public static int Score => 100;
+    public Position Position => Pos;
 
-    public Enemy(int posX, int posY, EnemyGroupSynchronizer groupSynchronizer, int health = 2) : base(posX, posY)
+    public Enemy(int posX, int posY, int health = 2) : base(posX, posY)
     {
-        _groupSynchronizer = groupSynchronizer;
+        Count++;
+        
         Pos.X = posX;
         Pos.Y = posY;
         
         Health = health;
         Color = ConsoleColor.Yellow;
     }
-    
-    public void Move()
+
+    public void Move(EnemyDirection direction)
     {
         Clear();
         
-        switch (_groupSynchronizer.Direction)
+        switch (direction)
         {
             case EnemyDirection.Left:
                 Pos.AddFraction(-Speed, 0);
                 break;
-
+        
             case EnemyDirection.Right:
                 Pos.AddFraction(Speed, 0);
                 break;
@@ -42,9 +48,6 @@ public class Enemy : GameObject
             case EnemyDirection.Down:
                 Pos.Y++;
                 break;
-            
-            default:
-                throw new ArgumentOutOfRangeException();
         }
         
         if (_attackCd < 1)
@@ -91,6 +94,12 @@ public class Enemy : GameObject
         Display.ClearAt(Pos.X - 1, Pos.Y);
         Display.ClearAt(Pos.X, Pos.Y);
         Display.ClearAt(Pos.X + 1, Pos.Y);
+    }
+
+    public override void Remove()
+    {
+        ObjectManager.MarkForRemoval(this);
+        isActive = false;
     }
 }
 

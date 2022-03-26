@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Classes.GameObjects;
+﻿using System.Diagnostics;
+using ConsoleGame.Classes.GameObjects;
 using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
@@ -10,7 +11,9 @@ public static class ObjectManager
     private static readonly List<Projectile> Projectiles = new();
     private static readonly List<Obstacle> Obstacles = new();
     private static readonly List<Enemy> Enemies = new();
-    private static readonly List<EnemyGroup> EnemyGroups = new();
+    private static readonly List<EnemyGroupOld> EnemyGroups = new();
+
+    private static readonly List<NewEnemyGroup> NewEnemyGroups = new();
 
     private static readonly Player Player = new();
 
@@ -23,6 +26,10 @@ public static class ObjectManager
     {
         Player.PerformAction(Input.Get);
         
+        Trace.WriteLine($"Enemy list  {Enemies.Count}");
+        Trace.WriteLine($"Enemy class {Enemy.Count}");
+        Trace.WriteLine($"Enemy group enemies {NewEnemyGroups[0].Enemies.Count}");
+        
         foreach (var projectile in Projectiles)
         {
             projectile.Move();
@@ -34,6 +41,7 @@ public static class ObjectManager
         if (_backgroundTicks % EnemyMoveDelay == 0)
         {
             MoveEnemies();
+            _backgroundTicks = 0;
         }
         
         foreach (var enemy in Enemies) enemy.Draw();
@@ -55,18 +63,21 @@ public static class ObjectManager
         Obstacles.Add(obstacle);
     }
 
-    public static void Add(EnemyGroup enemyGroup)
+    public static void Add(NewEnemyGroup newEnemyGroup)
     {
-        EnemyGroups.Add(enemyGroup);
-
-        var startX = enemyGroup.StartX;
-        var startY = enemyGroup.StartY;
+        var startX = newEnemyGroup.StartX;
+        var startY = newEnemyGroup.StartY;
         
-        for (var i = 0; i < enemyGroup.Width; i++)
-        for (var j = 0; j < enemyGroup.Height; j++)
+        for (var i = 0; i < newEnemyGroup.Width; i++)
+        for (var j = 0; j < newEnemyGroup.Height; j++)
         {
-            Enemies.Add(new Enemy(startX + i * 4, startY + j * 2, enemyGroup.Synchronizer));
+            var enemy = new Enemy(startX + i * 4, startY + j * 2);
+            
+            Enemies.Add(enemy);
+            newEnemyGroup.Enemies.Add(enemy);
         }
+
+        NewEnemyGroups.Add(newEnemyGroup);
     }
     
     public static void MarkForRemoval(IRemovable item)
@@ -104,15 +115,18 @@ public static class ObjectManager
 
     private static void MoveEnemies()
     {
-        foreach (var enemyGroup in EnemyGroups)
+        // foreach (var enemyGroup in EnemyGroups)
+        // {
+        //     if (enemyGroup.CheckBoundary())
+        //         enemyGroup.Synchronizer.Direction = EnemyDirection.Down;
+        // }
+
+        // foreach (var enemy in Enemies) enemy.Move();
+
+        foreach (var newEnemyGroup in NewEnemyGroups)
         {
-            if (enemyGroup.CheckBoundary())
-                enemyGroup.Synchronizer.Direction = EnemyDirection.Down;
+            newEnemyGroup.Move();
         }
-
-        foreach (var enemy in Enemies) enemy.Move();
-
-        _backgroundTicks = 0;
     }
 
     private static bool CheckCollision(Projectile projectile)
@@ -133,6 +147,11 @@ public static class ObjectManager
             {
                 if (enemy.HitBox(ref projectile)) return true;
             }
+
+            // foreach (var newEnemyGroup in NewEnemyGroups)
+            // {
+            //     if (newEnemyGroup.CheckCollision(ref projectile)) return true;
+            // }
         }
         
         return false;

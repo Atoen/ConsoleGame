@@ -3,7 +3,7 @@ using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes;
 
-public class EnemyGroup
+public class EnemyGroupOld
 {
     public int StartX;
     public int StartY;
@@ -15,7 +15,7 @@ public class EnemyGroup
     private Position _upperLeftCorner;
     private Position _lowerRightCorner;
 
-    public EnemyGroup(int width, int height, EnemyDirection direction = EnemyDirection.Right)
+    public EnemyGroupOld(int width, int height, EnemyDirection direction = EnemyDirection.Right)
     {
         Width = width;
         Height = height;

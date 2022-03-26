@@ -35,7 +35,6 @@ public static class Game
         Console.CursorVisible = false;
 
         Input.QuitEvent += (_, _) => _isRunning = false;
-        
 
         // for (var i = 0; i < byte.MaxValue; i++)
         // {
@@ -90,11 +89,13 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        ObjectManager.Add(new EnemyGroup(5, 2)
-        {
-            StartX = 5,
-            StartY = 5,
-        });
+        // ObjectManager.Add(new EnemyGroup(5, 2)
+        // {
+        //     StartX = 5,
+        //     StartY = 5,
+        // });
+        
+        ObjectManager.Add(new NewEnemyGroup(5, 1, 5, 5));
     }
 
     private static void DrawSplashScreen()

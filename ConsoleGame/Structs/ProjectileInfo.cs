@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace ConsoleGame.Structs;
+﻿namespace ConsoleGame.Structs;
 
 public struct ProjectileInfo
 {

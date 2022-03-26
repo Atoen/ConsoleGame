@@ -1,20 +1,19 @@
-﻿using ConsoleGame.Structs;
+﻿using System.Diagnostics;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects;
 
 public class Enemy : GameObject
 {
-    public static int Count;
-
     private static readonly char[] Sprite = {'<', 'O', '>'};
     private const char ProjectileSymbol = '|';
     private const ConsoleColor ProjectileColor = ConsoleColor.Red;
     private const int AttackDelay = 10;
     private const float Speed = 0.5f;
 
-    public bool isActive = true;
+    public bool IsActive = true;
+    public bool Attacking = false;
     
-    // private readonly EnemyGroupSynchronizer _groupSynchronizer;
     private int _attackCd = AttackDelay;
 
     public static int Score => 100;
@@ -22,8 +21,6 @@ public class Enemy : GameObject
 
     public Enemy(int posX, int posY, int health = 2) : base(posX, posY)
     {
-        Count++;
-        
         Pos.X = posX;
         Pos.Y = posY;
         
@@ -61,6 +58,8 @@ public class Enemy : GameObject
 
     private void Attack()
     {
+        if (!Attacking) return;
+
         _attackCd = AttackDelay;
         
         var info = new ProjectileInfo(Pos.X, Pos.Y)
@@ -99,7 +98,7 @@ public class Enemy : GameObject
     public override void Remove()
     {
         ObjectManager.MarkForRemoval(this);
-        isActive = false;
+        IsActive = false;
     }
 }
 

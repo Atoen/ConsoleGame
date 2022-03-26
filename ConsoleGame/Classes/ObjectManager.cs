@@ -11,9 +11,9 @@ public static class ObjectManager
     private static readonly List<Projectile> Projectiles = new();
     private static readonly List<Obstacle> Obstacles = new();
     private static readonly List<Enemy> Enemies = new();
-    private static readonly List<EnemyGroupOld> EnemyGroups = new();
+    // private static readonly List<EnemyGroupOld> EnemyGroups = new();
 
-    private static readonly List<NewEnemyGroup> NewEnemyGroups = new();
+    private static readonly List<EnemyGroup> EnemyGroups = new();
 
     private static readonly Player Player = new();
 
@@ -26,9 +26,11 @@ public static class ObjectManager
     {
         Player.PerformAction(Input.Get);
         
-        Trace.WriteLine($"Enemy list  {Enemies.Count}");
-        Trace.WriteLine($"Enemy class {Enemy.Count}");
-        Trace.WriteLine($"Enemy group enemies {NewEnemyGroups[0].Enemies.Count}");
+        // Trace.WriteLine(Projectiles.Count);
+        
+        // Trace.WriteLine($"Enemy list  {Enemies.Count}");
+        // Trace.WriteLine($"Enemy class {Enemy.Count}");
+        // Trace.WriteLine($"Enemy group {NewEnemyGroups[0].Enemies.Count}");
         
         foreach (var projectile in Projectiles)
         {
@@ -63,21 +65,21 @@ public static class ObjectManager
         Obstacles.Add(obstacle);
     }
 
-    public static void Add(NewEnemyGroup newEnemyGroup)
+    public static void Add(EnemyGroup enemyGroup)
     {
-        var startX = newEnemyGroup.StartX;
-        var startY = newEnemyGroup.StartY;
+        var startX = enemyGroup.StartX;
+        var startY = enemyGroup.StartY;
         
-        for (var i = 0; i < newEnemyGroup.Width; i++)
-        for (var j = 0; j < newEnemyGroup.Height; j++)
+        for (var i = 0; i < enemyGroup.Width; i++)
+        for (var j = 0; j < enemyGroup.Height; j++)
         {
             var enemy = new Enemy(startX + i * 4, startY + j * 2);
             
             Enemies.Add(enemy);
-            newEnemyGroup.Enemies.Add(enemy);
+            enemyGroup.Enemies.Add(enemy);
         }
-
-        NewEnemyGroups.Add(newEnemyGroup);
+        enemyGroup.Init();
+        EnemyGroups.Add(enemyGroup);
     }
     
     public static void MarkForRemoval(IRemovable item)
@@ -107,6 +109,10 @@ public static class ObjectManager
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
+                
+                case EnemyGroup enemyGroup:
+                    EnemyGroups.Remove(enemyGroup);
+                    break;
             }
         }
         
@@ -123,7 +129,7 @@ public static class ObjectManager
 
         // foreach (var enemy in Enemies) enemy.Move();
 
-        foreach (var newEnemyGroup in NewEnemyGroups)
+        foreach (var newEnemyGroup in EnemyGroups)
         {
             newEnemyGroup.Move();
         }

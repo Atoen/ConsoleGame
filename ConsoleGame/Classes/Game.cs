@@ -26,7 +26,7 @@ public static class Game
     }
 
 #pragma warning disable CA1416
-        public static void Start()
+    public static void Start()
     {
         Console.Title = "Game";
         Console.WindowWidth = GameScreenWidth;
@@ -37,18 +37,11 @@ public static class Game
         Input.QuitEvent += (_, _) => _isRunning = false;
 
         // for (var i = 0; i < byte.MaxValue; i++)
-        // {
-        //     var j = 5 * i;
-        //     Display.Print(j % GameScreenWidth, j / GameScreenWidth, (char) (i / 100 + 48), ConsoleColor.White);
-        //     Display.Print((j + 1) % GameScreenWidth, (j + 1) / GameScreenWidth, (char) ((i / 10) % 10 + 48), ConsoleColor.White);
-        //     Display.Print((j + 2) % GameScreenWidth, (j + 2) / GameScreenWidth, (char) ((i) % 10 + 48), ConsoleColor.White);
-        //     Display.Print((j + 3) % GameScreenWidth, (j + 3) / GameScreenWidth, (char) i, ConsoleColor.White);
-        // }
+        //     Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
         // Display.Update();
-        // Console.ReadKey();
-        
-        DrawSplashScreen();
 
+        DrawSplashScreen();
+        
         GameInterface.Draw();
 
         PrepareField();
@@ -69,7 +62,7 @@ public static class Game
 
             ObjectManager.Update();
             ObjectManager.CleanUp();
-            
+
             Display.Update();
             
             stopwatch.Stop();
@@ -89,13 +82,13 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
 
-        // ObjectManager.Add(new EnemyGroup(5, 2)
+        // ObjectManager.Add(new EnemyGroup(15, 4)
         // {
         //     StartX = 5,
         //     StartY = 5,
         // });
         
-        ObjectManager.Add(new NewEnemyGroup(5, 1, 5, 5));
+        ObjectManager.Add(new EnemyGroup(5, 2, 5, 5));
     }
 
     private static void DrawSplashScreen()

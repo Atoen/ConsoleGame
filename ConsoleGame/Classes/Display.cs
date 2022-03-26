@@ -15,9 +15,9 @@ public static class Display
         {Left = 0, Top = 0, Right = Game.GameScreenWidth, Bottom = Game.GameScreenHeight};
 
     private static bool _modified;
-    
+
     static Display()
-    { 
+    {
         SafeFileHandle = CreateFile("CONOUT$",
             0x40000000,
             2,
@@ -47,9 +47,9 @@ public static class Display
         var index = posX + Game.GameScreenWidth * posY;
         var symbolByte = (byte) symbol;
 
-        if (Buffer[index].symbol == symbolByte) return;
+        if (Buffer[index].Symbol == symbolByte) return;
         
-        Buffer[index].symbol = symbolByte;
+        Buffer[index].Symbol = symbolByte;
         Buffer[index].Color = (short) color;
 
         _modified = true;
@@ -59,9 +59,9 @@ public static class Display
     {
         var index = posX + Game.GameScreenWidth * posY;
         
-        if (Buffer[index].symbol == 32) return;
+        if (Buffer[index].Symbol == 32) return;
 
-        Buffer[index].symbol = 32; // Spacja ' '
+        Buffer[index].Symbol = 32; // Spacja ' '
         Buffer[index].Color = 15; // Biały
 
         _modified = true;
@@ -94,7 +94,7 @@ public static class Display
     [StructLayout(LayoutKind.Explicit)]
     private struct CharInfo
     {
-        [FieldOffset(0)] public byte symbol;
+        [FieldOffset(0)] public byte Symbol;
         [FieldOffset(2)] public short Color;
     }
     

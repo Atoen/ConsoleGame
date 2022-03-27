@@ -3,7 +3,7 @@ using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
 
-public class EnemyGroup : IRemovable
+public class EnemyGroupOld : IRemovable
 {
     public readonly int StartX;
     public readonly int StartY;
@@ -19,7 +19,7 @@ public class EnemyGroup : IRemovable
 
     public readonly List<Enemy> Enemies = new();
 
-    public EnemyGroup(int width, int height, int startX, int startY, EnemyDirection direction = EnemyDirection.Right)
+    public EnemyGroupOld(int width, int height, int startX, int startY, EnemyDirection direction = EnemyDirection.Right)
     {
         Width = width;
         Height = height;

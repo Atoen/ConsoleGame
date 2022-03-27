@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ConsoleGame.Classes.GameObjects;
+using ConsoleGame.Classes.GameObjects.Enemies;
 using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
@@ -10,10 +11,8 @@ public static class ObjectManager
 
     private static readonly List<Projectile> Projectiles = new();
     private static readonly List<Obstacle> Obstacles = new();
-    private static readonly List<Enemy> Enemies = new();
-    // private static readonly List<EnemyGroupOld> EnemyGroups = new();
-
-    private static readonly List<EnemyGroup> EnemyGroups = new();
+    private static readonly List<EnemyBase> Enemies = new();
+    private static readonly List<GenericGroup> GenericGroups = new();
 
     private static readonly Player Player = new();
 
@@ -65,21 +64,9 @@ public static class ObjectManager
         Obstacles.Add(obstacle);
     }
 
-    public static void Add(EnemyGroup enemyGroup)
+    public static void Add<T>(GenericGroup genericGroup) where T : EnemyBase
     {
-        var startX = enemyGroup.StartX;
-        var startY = enemyGroup.StartY;
-        
-        for (var i = 0; i < enemyGroup.Width; i++)
-        for (var j = 0; j < enemyGroup.Height; j++)
-        {
-            var enemy = new Enemy(startX + i * 4, startY + j * 2);
-            
-            Enemies.Add(enemy);
-            enemyGroup.Enemies.Add(enemy);
-        }
-        enemyGroup.Init();
-        EnemyGroups.Add(enemyGroup);
+
     }
     
     public static void MarkForRemoval(IRemovable item)
@@ -102,15 +89,13 @@ public static class ObjectManager
                     Obstacles.Remove(obstacle);
                     break;
 
-                case Enemy enemy:
-
-                    Game.Score += Enemy.Score;
-                    
+                case EnemyBase enemy:
+                    Game.Score += enemy.Score;
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
                 
-                case EnemyGroup enemyGroup:
+                case EnemyGroupOld enemyGroup:
                     EnemyGroups.Remove(enemyGroup);
                     break;
             }
@@ -121,15 +106,7 @@ public static class ObjectManager
 
     private static void MoveEnemies()
     {
-        // foreach (var enemyGroup in EnemyGroups)
-        // {
-        //     if (enemyGroup.CheckBoundary())
-        //         enemyGroup.Synchronizer.Direction = EnemyDirection.Down;
-        // }
-
-        // foreach (var enemy in Enemies) enemy.Move();
-
-        foreach (var newEnemyGroup in EnemyGroups)
+        foreach (var newEnemyGroup in GenericGroups)
         {
             newEnemyGroup.Move();
         }
@@ -153,11 +130,6 @@ public static class ObjectManager
             {
                 if (enemy.HitBox(ref projectile)) return true;
             }
-
-            // foreach (var newEnemyGroup in NewEnemyGroups)
-            // {
-            //     if (newEnemyGroup.CheckCollision(ref projectile)) return true;
-            // }
         }
         
         return false;

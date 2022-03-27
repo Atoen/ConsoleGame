@@ -22,9 +22,6 @@ public class Player : GameObject
 
     public Player(int posX = 30, int posY = 20) : base(posX, posY)
     {
-        Pos.X = posX;
-        Pos.Y = posY;
-
         Color = ConsoleColor.Green;
         Health = 5;
     }

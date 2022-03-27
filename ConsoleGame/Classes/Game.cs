@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ConsoleGame.Classes.GameObjects;
+using ConsoleGame.Classes.GameObjects.Enemies;
 
 namespace ConsoleGame.Classes;
 
@@ -88,7 +89,7 @@ public static class Game
         //     StartY = 5,
         // });
         
-        ObjectManager.Add(new EnemyGroup(5, 2, 5, 5));
+        ObjectManager.Add<FastEnemy>(new GenericGroup(5, 2, 5, 5));
     }
 
     private static void DrawSplashScreen()

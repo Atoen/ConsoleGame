@@ -11,6 +11,9 @@ public class Enemy : GameObject
     private const int AttackDelay = 10;
     private const float Speed = 0.5f;
 
+    public const int Width = 4;
+    public const int Height = 2;
+    
     public bool IsActive = true;
     public bool Attacking = false;
     
@@ -21,9 +24,6 @@ public class Enemy : GameObject
 
     public Enemy(int posX, int posY, int health = 2) : base(posX, posY)
     {
-        Pos.X = posX;
-        Pos.Y = posY;
-        
         Health = health;
         Color = ConsoleColor.Yellow;
     }

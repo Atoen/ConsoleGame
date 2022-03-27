@@ -12,9 +12,6 @@ public class Projectile : GameObject
     public Position Position => Pos;
     public Projectile(ProjectileInfo info) : base(info.PosX, info.PosY)
     {
-        Pos.X = info.PosX;
-        Pos.Y = info.PosY;
-        
         Hostile = info.Hostile;
         Damage = info.Damage;
         Symbol = info.Symbol;

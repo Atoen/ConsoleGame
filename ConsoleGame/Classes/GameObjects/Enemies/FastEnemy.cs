@@ -3,23 +3,23 @@
 public class FastEnemy : EnemyBase
 {
     private static readonly char[] Sprite = {'-', 'Y', '-'};
-    
-    public new int Score = 100;
-    
+
+    public new const int Width = 4;
+    public new const int Height = 2;
+
     public FastEnemy(int posX, int posY) : base(posX, posY)
     {
         Health = 1;
-        Color = ConsoleColor.Green;
+        Color = ConsoleColor.Yellow;
         
         ProjectileSymbol = 'v';
-        ProjectileColor = ConsoleColor.Blue;
+        ProjectileColor = ConsoleColor.Magenta;
         Speed = 1f;
 
-        Width = 4;
-        Height = 2;
-        
         AttackDelay = 5;
         AttackCd = AttackDelay;
+
+        Score = 200;
     }
     
     public override bool HitBox(ref Projectile projectile)

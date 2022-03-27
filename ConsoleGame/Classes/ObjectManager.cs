@@ -12,7 +12,7 @@ public static class ObjectManager
     private static readonly List<Projectile> Projectiles = new();
     private static readonly List<Obstacle> Obstacles = new();
     private static readonly List<EnemyBase> Enemies = new();
-    private static readonly List<GenericGroup> GenericGroups = new();
+    private static readonly List<EnemyGroup> EnemyGroups = new();
 
     private static readonly Player Player = new();
 
@@ -24,12 +24,6 @@ public static class ObjectManager
     public static void Update()
     {
         Player.PerformAction(Input.Get);
-        
-        // Trace.WriteLine(Projectiles.Count);
-        
-        // Trace.WriteLine($"Enemy list  {Enemies.Count}");
-        // Trace.WriteLine($"Enemy class {Enemy.Count}");
-        // Trace.WriteLine($"Enemy group {NewEnemyGroups[0].Enemies.Count}");
         
         foreach (var projectile in Projectiles)
         {
@@ -64,8 +58,41 @@ public static class ObjectManager
         Obstacles.Add(obstacle);
     }
 
-    public static void Add<T>(GenericGroup genericGroup) where T : EnemyBase
+    public static void Add<T>(EnemyGroup enemyGroup) where T : EnemyBase
     {
+        Func<int, int, EnemyBase> enemyFactory;
+        
+        var startX = enemyGroup.StartX;
+        var startY = enemyGroup.StartY;
+        int spacingX;
+        int spacingY;
+
+        switch (typeof(T))
+        {
+            case var _ when typeof(T) == typeof(FastEnemy):
+                enemyFactory = (x, y) => new FastEnemy(x, y);
+                spacingX = FastEnemy.Width;
+                spacingY = FastEnemy.Height;
+                break;
+
+            default:
+                enemyFactory = (x, y) => new RegularEnemy(x, y);
+                spacingX = RegularEnemy.Width;
+                spacingY = RegularEnemy.Height;
+                break;
+        }
+        
+        
+        for (var i = 0; i < enemyGroup.Width; i++)
+        for (var j = 0; j < enemyGroup.Height; j++)
+        {
+            var enemy = enemyFactory(startX + i * spacingX, startY + j * spacingY);
+            
+            Enemies.Add(enemy);
+            enemyGroup.Enemies.Add(enemy);
+        }
+        
+        EnemyGroups.Add(enemyGroup);
 
     }
     
@@ -95,9 +122,7 @@ public static class ObjectManager
                     Enemies.Remove(enemy);
                     break;
                 
-                case EnemyGroupOld enemyGroup:
-                    EnemyGroups.Remove(enemyGroup);
-                    break;
+                
             }
         }
         
@@ -106,9 +131,9 @@ public static class ObjectManager
 
     private static void MoveEnemies()
     {
-        foreach (var newEnemyGroup in GenericGroups)
+        foreach (var enemyGroup in EnemyGroups)
         {
-            newEnemyGroup.Move();
+            enemyGroup.Move();
         }
     }
 

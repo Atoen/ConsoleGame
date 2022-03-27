@@ -1,15 +1,16 @@
 ﻿using ConsoleGame.Classes.GameObjects;
+using ConsoleGame.Classes.GameObjects.Enemies;
 using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
 
-public class EnemyGroupOld : IRemovable
+public class EnemyGroup : IRemovable
 {
     public readonly int StartX;
     public readonly int StartY;
     public readonly int Width;
     public readonly int Height;
-    
+
     private int _leftGroupEdge;
     private int _rightGroupEdge;
     private int _groupBottom;
@@ -17,17 +18,17 @@ public class EnemyGroupOld : IRemovable
     private EnemyDirection _direction;
     private EnemyDirection _nextDirection;
 
-    public readonly List<Enemy> Enemies = new();
+    public readonly List<EnemyBase> Enemies = new();
 
-    public EnemyGroupOld(int width, int height, int startX, int startY, EnemyDirection direction = EnemyDirection.Right)
+    public EnemyGroup(int width, int height, int startX, int startY, EnemyDirection direction = EnemyDirection.Right)
     {
         Width = width;
         Height = height;
         StartX = startX;
         StartY = startY;
-        
+
         _direction = direction;
-        
+
         _leftGroupEdge = startX;
         _rightGroupEdge = startX + (width - 1) * 4;
         _groupBottom = startY + (height - 1) * 2;
@@ -43,7 +44,7 @@ public class EnemyGroupOld : IRemovable
             if (enemy.Position.X < _leftGroupEdge) _leftGroupEdge = enemy.Position.X;
             if (enemy.Position.Y > _groupBottom) _groupBottom = enemy.Position.Y;
         }
-        
+
         UpdateAttackingEnemies();
     }
 
@@ -54,9 +55,9 @@ public class EnemyGroupOld : IRemovable
         _leftGroupEdge = Game.GameScreenWidth - 1;
         _rightGroupEdge = 0;
         _groupBottom = 0;
-        
+
         var needToUpdateEnemies = false;
-        
+
         for (var i = Enemies.Count - 1; i >= 0; i--)
         {
             var enemy = Enemies[i];
@@ -66,14 +67,14 @@ public class EnemyGroupOld : IRemovable
                 needToUpdateEnemies = true;
                 continue;
             }
-            
+
             enemy.Move(_direction);
-            
+
             if (enemy.Position.X > _rightGroupEdge) _rightGroupEdge = enemy.Position.X;
             if (enemy.Position.X < _leftGroupEdge) _leftGroupEdge = enemy.Position.X;
             if (enemy.Position.Y > _groupBottom) _groupBottom = enemy.Position.Y;
         }
-        
+
         if (needToUpdateEnemies) UpdateAttackingEnemies();
     }
 
@@ -85,12 +86,12 @@ public class EnemyGroupOld : IRemovable
                 _direction = EnemyDirection.Down;
                 _nextDirection = EnemyDirection.Right;
                 break;
-            
+
             case EnemyDirection.Right when _rightGroupEdge > Game.GameScreenWidth - 3:
                 _direction = EnemyDirection.Down;
                 _nextDirection = EnemyDirection.Left;
                 break;
-            
+
             case EnemyDirection.Down:
                 _direction = _nextDirection;
                 break;

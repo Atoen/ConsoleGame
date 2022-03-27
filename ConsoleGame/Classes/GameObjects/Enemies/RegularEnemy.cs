@@ -4,10 +4,9 @@ public class RegularEnemy : EnemyBase
 {
     private static readonly char[] Sprite = {'<', 'O', '>'};
 
-    public new static readonly int Width = 4;
-    public new static readonly int Height = 2;
-    public new static int Score => 100;
-    
+    public new const int Width = 4;
+    public new const int Height = 2;
+
     public RegularEnemy(int posX, int posY) : base(posX, posY)
     {
         Health = 2;
@@ -19,6 +18,8 @@ public class RegularEnemy : EnemyBase
         
         AttackDelay = 10;
         AttackCd = AttackDelay;
+
+        Score = 100;
     }
     
     public override bool HitBox(ref Projectile projectile)

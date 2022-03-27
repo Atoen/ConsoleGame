@@ -74,6 +74,13 @@ public static class ObjectManager
                 spacingX = FastEnemy.Width;
                 spacingY = FastEnemy.Height;
                 break;
+            
+            case var _ when typeof(T) == typeof(TankEnemy):
+                enemyFactory = (x, y) => new TankEnemy(x, y);
+                spacingX = TankEnemy.Width;
+                spacingY = TankEnemy.Height;
+                break;
+            
 
             default:
                 enemyFactory = (x, y) => new RegularEnemy(x, y);
@@ -91,6 +98,8 @@ public static class ObjectManager
             Enemies.Add(enemy);
             enemyGroup.Enemies.Add(enemy);
         }
+        
+        enemyGroup.Init();
         
         EnemyGroups.Add(enemyGroup);
 
@@ -121,8 +130,7 @@ public static class ObjectManager
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
-                
-                
+
             }
         }
         

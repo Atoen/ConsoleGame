@@ -82,14 +82,13 @@ public static class Game
         {
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
-
-        // ObjectManager.Add(new EnemyGroup(15, 4)
-        // {
-        //     StartX = 5,
-        //     StartY = 5,
-        // });
         
-        ObjectManager.Add<FastEnemy>(new EnemyGroup(5, 2, 5, 5));
+        ObjectManager.Add<TankEnemy>(new EnemyGroup(3, 1, 12, 1));
+        
+        ObjectManager.Add<RegularEnemy>(new EnemyGroup(5, 2, 15, 6));
+        
+        ObjectManager.Add<FastEnemy>(new EnemyGroup(4, 1, 12, 12));
+        
     }
 
     private static void DrawSplashScreen()

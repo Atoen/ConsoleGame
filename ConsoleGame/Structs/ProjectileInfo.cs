@@ -11,6 +11,16 @@ public struct ProjectileInfo
     public ConsoleColor Color;
     public ProjectileDirection Direction;
 
+    public Position Pos
+    {
+        get => (PosX, PosY);
+        set
+        {
+            PosX = value.X;
+            PosY = value.Y;
+        }
+    }
+
     public ProjectileInfo()
     {
         PosX = 0;

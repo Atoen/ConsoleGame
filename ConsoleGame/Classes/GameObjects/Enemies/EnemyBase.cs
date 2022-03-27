@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Structs;
+﻿using System.Diagnostics;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects.Enemies;
 
@@ -7,12 +8,8 @@ public abstract class EnemyBase : GameObject
     protected float Speed;
     protected int AttackDelay;
     protected int AttackCd;
+    protected ProjectileInfo ProjectileSettings = new();
 
-    protected char ProjectileSymbol;
-    protected ConsoleColor ProjectileColor;
-
-    public int Width = 1;
-    public int Height = 1;
     public int Score = 0;
     
     public bool IsActive = true;
@@ -42,6 +39,9 @@ public abstract class EnemyBase : GameObject
             case EnemyDirection.Down:
                 Pos.Y++;
                 break;
+            
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
         
         if (AttackCd < 1)
@@ -58,16 +58,15 @@ public abstract class EnemyBase : GameObject
         if (!Attacking) return;
 
         AttackCd = AttackDelay;
-        
-        var info = new ProjectileInfo(Pos.X, Pos.Y)
-        {
-            Symbol = ProjectileSymbol,
-            Color = ProjectileColor,
-            Hostile = true,
-            Direction = ProjectileDirection.Down
-        };
-        
-        ObjectManager.Add(new Projectile(info));
+
+        ProjectileSettings.Pos = Pos;
+        ObjectManager.Add(new Projectile(ProjectileSettings));
+    }
+
+    public override void Remove()
+    {
+        IsActive = false;
+        ObjectManager.MarkForRemoval(this);
     }
 }
 

@@ -1,21 +1,33 @@
-﻿namespace ConsoleGame.Classes.GameObjects.Enemies;
+﻿using System.Diagnostics;
+using ConsoleGame.Structs;
+
+namespace ConsoleGame.Classes.GameObjects.Enemies;
 
 public class RegularEnemy : EnemyBase
 {
     private static readonly char[] Sprite = {'<', 'O', '>'};
 
-    public new const int Width = 4;
-    public new const int Height = 2;
+    public const int Width = 4;
+    public const int Height = 2;
 
     public RegularEnemy(int posX, int posY) : base(posX, posY)
     {
         Health = 2;
         Color = ConsoleColor.Yellow;
-        
-        ProjectileSymbol = '|';
-        ProjectileColor = ConsoleColor.Red;
         Speed = 0.5f;
-        
+
+        ProjectileSettings = new ProjectileInfo()
+        {
+            Symbol = '|',
+            Color = ConsoleColor.Red,
+            
+            Speed = 0.5f,
+            Damage = 1,
+            Direction = ProjectileDirection.Down,
+            
+            Hostile = true,
+        };
+
         AttackDelay = 10;
         AttackCd = AttackDelay;
 
@@ -42,11 +54,5 @@ public class RegularEnemy : EnemyBase
         Display.ClearAt(Pos.X - 1, Pos.Y);
         Display.ClearAt(Pos.X, Pos.Y);
         Display.ClearAt(Pos.X + 1, Pos.Y);
-    }
-
-    public override void Remove()
-    {
-        ObjectManager.MarkForRemoval(this);
-        IsActive = false;
     }
 }

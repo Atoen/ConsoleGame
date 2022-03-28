@@ -37,9 +37,9 @@ public static class Game
 
         Input.QuitEvent += (_, _) => _isRunning = false;
 
-        // for (var i = 0; i < byte.MaxValue; i++)
-        //     Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
-        // Display.Update();
+        for (var i = 0; i < byte.MaxValue; i++)
+            Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
+        Display.Update();
 
         DrawSplashScreen();
         
@@ -83,12 +83,11 @@ public static class Game
             ObjectManager.Add(new Obstacle(10 + i, 15));
         }
         
-        ObjectManager.Add<TankEnemy>(new EnemyGroup(3, 1, 12, 1));
+        ObjectManager.Add<TankEnemy>(new EnemyGroup(5, 1, 50, 1, EnemyDirection.Left));
         
-        ObjectManager.Add<RegularEnemy>(new EnemyGroup(5, 2, 15, 6));
+        // ObjectManager.Add<RegularEnemy>(new EnemyGroup(8, 2, 30, 6));
         
-        ObjectManager.Add<FastEnemy>(new EnemyGroup(4, 1, 12, 12));
-        
+        // ObjectManager.Add<FastEnemy>(new EnemyGroup(2, 1, 70, 12, EnemyDirection.Left));
     }
 
     private static void DrawSplashScreen()
@@ -101,7 +100,6 @@ public static class Game
             @"                     ██║   ██╔══██║██╔══╝      ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ",
             @"                     ██║   ██║  ██║███████╗    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗",
             @"                     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝"
-
         };
 
         Console.SetCursorPosition(0, 10);

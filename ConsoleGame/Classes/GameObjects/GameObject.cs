@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Interfaces;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
+using ConsoleGame.Interfaces;
 using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects;

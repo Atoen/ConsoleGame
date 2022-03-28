@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using ConsoleGame.Classes.GameObjects;
+﻿using ConsoleGame.Classes.GameObjects;
 using ConsoleGame.Classes.GameObjects.Enemies;
+using ConsoleGame.Classes.GameObjects.Projectiles;
 using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
@@ -14,7 +14,7 @@ public static class ObjectManager
     private static readonly List<EnemyBase> Enemies = new();
     private static readonly List<EnemyGroup> EnemyGroups = new();
 
-    private static readonly Player Player = new();
+    public static readonly Player Player = new();
 
     private const int EnemyMoveDelay = 5;
     private static int _backgroundTicks;
@@ -25,8 +25,11 @@ public static class ObjectManager
     {
         Player.PerformAction(Input.Get);
         
-        foreach (var projectile in Projectiles)
+        // ReSharper disable once ForCanBeConvertedToForeach
+        // Nie może być foreach bo SpecialProjectile tworzy nowe pociski
+        for (var i = 0; i < Projectiles.Count; i++)
         {
+            var projectile = Projectiles[i];
             projectile.Move();
 
             if (!CheckCollision(projectile)) continue;
@@ -81,7 +84,6 @@ public static class ObjectManager
                 spacingY = TankEnemy.Height;
                 break;
             
-
             default:
                 enemyFactory = (x, y) => new RegularEnemy(x, y);
                 spacingX = RegularEnemy.Width;
@@ -102,7 +104,6 @@ public static class ObjectManager
         enemyGroup.Init();
         
         EnemyGroups.Add(enemyGroup);
-
     }
     
     public static void MarkForRemoval(IRemovable item)
@@ -130,7 +131,6 @@ public static class ObjectManager
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
-
             }
         }
         
@@ -154,17 +154,14 @@ public static class ObjectManager
 
         if (projectile.Hostile)
         {
-            if (Player.HitBox(ref projectile)) return true;
+            return Player.HitBox(ref projectile);
         }
 
-        else
+        foreach (var enemy in Enemies)
         {
-            foreach (var enemy in Enemies)
-            {
-                if (enemy.HitBox(ref projectile)) return true;
-            }
+            if (enemy.HitBox(ref projectile)) return true;
         }
-        
+
         return false;
     }
 }

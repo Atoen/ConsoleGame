@@ -1,11 +1,11 @@
 ﻿using ConsoleGame.Structs;
 
-namespace ConsoleGame.Classes.GameObjects;
+namespace ConsoleGame.Classes.GameObjects.Projectiles;
 
 public class Projectile : GameObject
 {
-    private readonly float _speed;
-    private readonly ProjectileDirection _direction;
+    protected readonly float Speed;
+    protected readonly ProjectileDirection Direction;
 
     public readonly int Damage;
     public readonly bool Hostile;
@@ -17,15 +17,20 @@ public class Projectile : GameObject
         Symbol = info.Symbol;
         Color = info.Color;
 
-        _speed = info.Speed;
-        _direction = info.Direction;
+        Speed = info.Speed;
+        Direction = info.Direction;
     }
 
-    public void Move()
+    public virtual void Disable()
     {
-        Display.ClearAt(Pos.X, Pos.Y);
+        Remove();
+    }
 
-        switch (_direction)
+    public virtual void Move()
+    {
+        Clear();
+
+        switch (Direction)
         {
             case ProjectileDirection.Down:
                 if (Pos.Y >= Game.GameScreenHeight - 1)
@@ -34,7 +39,7 @@ public class Projectile : GameObject
                     return;
                 }
                 
-                Pos.AddFraction(0, _speed);
+                Pos.AddFraction(0, Speed);
                 break;
 
             case ProjectileDirection.Up:
@@ -44,7 +49,7 @@ public class Projectile : GameObject
                     return;
                 }
                 
-                Pos.AddFraction(0, -_speed);
+                Pos.AddFraction(0, -Speed);
                 break;
 
             case ProjectileDirection.Left:
@@ -54,7 +59,7 @@ public class Projectile : GameObject
                     return;
                 }
 
-                Pos.AddFraction(-_speed, 0);
+                Pos.AddFraction(-Speed, 0);
                 break;
 
             case ProjectileDirection.Right:
@@ -64,7 +69,7 @@ public class Projectile : GameObject
                     return;
                 }
                 
-                Pos.AddFraction(_speed, 0);
+                Pos.AddFraction(Speed, 0);
                 break;
             
             default:

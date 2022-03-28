@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ConsoleGame.Classes.GameObjects.Projectiles;
 using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects.Enemies;
@@ -16,7 +17,7 @@ public class RegularEnemy : EnemyBase
         Color = ConsoleColor.Yellow;
         Speed = 0.5f;
 
-        ProjectileSettings = new ProjectileInfo()
+        ProjectileSettings = new ProjectileInfo
         {
             Symbol = '|',
             Color = ConsoleColor.Red,

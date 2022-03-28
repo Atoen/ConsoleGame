@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Structs;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects;
 
@@ -6,8 +7,8 @@ public class Player : GameObject
 {
     private static readonly char[,] Sprite =
     {
-        {' ', (char) 30, ' '},
-        {'/', (char) 254, '\\'},
+        {'_', (char) 30, '_'},
+        {'/', (char) 219, '\\'},
         {(char) 19, ' ', (char) 19}
     };
     
@@ -19,6 +20,7 @@ public class Player : GameObject
 
     public static event EventHandler? HitEvent; 
     public int CurrentHealth => Health;
+    public Position Position => Pos;
 
     public Player(int posX = 30, int posY = 20) : base(posX, posY)
     {

@@ -1,5 +1,4 @@
-﻿using ConsoleGame.Classes.GameObjects;
-using ConsoleGame.Classes.GameObjects.Enemies;
+﻿using ConsoleGame.Classes.GameObjects.Enemies;
 using ConsoleGame.Interfaces;
 
 namespace ConsoleGame.Classes;
@@ -133,4 +132,11 @@ public class EnemyGroup : IRemovable
     {
         ObjectManager.MarkForRemoval(this);
     }
+}
+
+public enum EnemyDirection
+{
+    Left,
+    Right,
+    Down
 }

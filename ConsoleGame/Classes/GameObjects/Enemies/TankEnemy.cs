@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Structs;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects.Enemies;
 
@@ -20,7 +21,7 @@ public class TankEnemy : EnemyBase
         Color = ConsoleColor.DarkRed;
         Speed = 0.25f;
         
-        ProjectileSettings = new ProjectileInfo()
+        ProjectileSettings = new ProjectileInfo
         {
             Symbol = '*',
             Color = ConsoleColor.White,
@@ -56,6 +57,16 @@ public class TankEnemy : EnemyBase
             Display.Print(Pos.X + i - 1, Pos.Y, Sprite[1, i], Color);
             Display.Print(Pos.X + i - 1, Pos.Y + 1, Sprite[2, i], Color);
         }
+    }
+    
+    protected override void Attack()
+    {
+        if (!Attacking) return;
+
+        AttackCd = AttackDelay;
+
+        ProjectileSettings.Pos = Pos;
+        ObjectManager.Add(new ExplodingProjectile(ProjectileSettings));
     }
 
     public override void Clear()

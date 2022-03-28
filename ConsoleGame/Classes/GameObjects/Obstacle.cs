@@ -1,4 +1,6 @@
-﻿namespace ConsoleGame.Classes.GameObjects;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
+
+namespace ConsoleGame.Classes.GameObjects;
 
 public class Obstacle : GameObject
 {

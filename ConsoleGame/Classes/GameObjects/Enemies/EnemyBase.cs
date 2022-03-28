@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
 using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects.Enemies;
@@ -41,7 +41,7 @@ public abstract class EnemyBase : GameObject
                 break;
             
             default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+                throw new ArgumentOutOfRangeException(nameof(direction));
         }
         
         if (AttackCd < 1)
@@ -53,7 +53,7 @@ public abstract class EnemyBase : GameObject
         AttackCd--;
     }
     
-    private void Attack()
+    protected virtual void Attack()
     {
         if (!Attacking) return;
 

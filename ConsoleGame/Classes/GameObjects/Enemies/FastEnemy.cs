@@ -1,4 +1,5 @@
-﻿using ConsoleGame.Structs;
+﻿using ConsoleGame.Classes.GameObjects.Projectiles;
+using ConsoleGame.Structs;
 
 namespace ConsoleGame.Classes.GameObjects.Enemies;
 
@@ -15,7 +16,7 @@ public class FastEnemy : EnemyBase
         Color = ConsoleColor.Red;
         Speed = 1f;
         
-        ProjectileSettings = new ProjectileInfo()
+        ProjectileSettings = new ProjectileInfo
         {
             Symbol = 'v',
             Color = ConsoleColor.Magenta,
@@ -47,6 +48,16 @@ public class FastEnemy : EnemyBase
         Display.Print(Pos.X - 1, Pos.Y, Sprite[0], Color);
         Display.Print(Pos.X, Pos.Y, Sprite[1], Color);
         Display.Print(Pos.X + 1, Pos.Y, Sprite[2], Color);
+    }
+
+    protected override void Attack()
+    {
+        if (!Attacking) return;
+
+        AttackCd = AttackDelay;
+
+        ProjectileSettings.Pos = Pos;
+        ObjectManager.Add(new SplittingProjectile(ProjectileSettings));
     }
 
     public override void Clear()

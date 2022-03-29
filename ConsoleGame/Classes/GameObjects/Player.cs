@@ -22,10 +22,10 @@ public class Player : GameObject
     public int CurrentHealth => Health;
     public Position Position => Pos;
 
-    public Player(int posX = 30, int posY = 20) : base(posX, posY)
+    public Player(int posX = 50, int posY = 22) : base(posX, posY)
     {
         Color = ConsoleColor.Green;
-        Health = 5;
+        Health = 10;
     }
     
     public void PerformAction(Actions action)
@@ -95,6 +95,7 @@ public class Player : GameObject
         Hit(projectile.Damage);
         HitEvent?.Invoke(null, EventArgs.Empty);
         return true;
+
     }
 
     public override void Clear()

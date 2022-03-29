@@ -27,13 +27,12 @@ public class TankEnemy : EnemyBase
             Color = ConsoleColor.White,
             
             Speed = 0.25f,
-            Damage = 2,
+            Damage = 5,
             Direction = ProjectileDirection.Down,
             
             Hostile = true,
         };
         
-
         AttackDelay = 20;
         AttackCd = AttackDelay;
 
@@ -57,16 +56,6 @@ public class TankEnemy : EnemyBase
             Display.Print(Pos.X + i - 1, Pos.Y, Sprite[1, i], Color);
             Display.Print(Pos.X + i - 1, Pos.Y + 1, Sprite[2, i], Color);
         }
-    }
-    
-    protected override void Attack()
-    {
-        if (!Attacking) return;
-
-        AttackCd = AttackDelay;
-
-        ProjectileSettings.Pos = Pos;
-        ObjectManager.Add(new ExplodingProjectile(ProjectileSettings));
     }
 
     public override void Clear()

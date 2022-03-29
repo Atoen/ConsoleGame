@@ -26,7 +26,7 @@ public static class GameInterface
         }
 
         Console.SetCursorPosition(HealthPos.X - 8, HealthPos.Y);
-        Console.Write($"Health: {ObjectManager.PlayerHealth}");
+        Console.Write($"Health: {ObjectManager.Player.CurrentHealth}");
         
         Console.SetCursorPosition(ScorePos.X - 7, ScorePos.Y);
         Console.Write("Score: 0");
@@ -42,7 +42,7 @@ public static class GameInterface
     private static void Update()
     {
         Console.SetCursorPosition(HealthPos.X, HealthPos.Y);
-        Console.Write(ObjectManager.PlayerHealth);
+        Console.Write(ObjectManager.Player.CurrentHealth);
 
         Console.SetCursorPosition(ScorePos.X, ScorePos.Y);
         Console.Write(Game.Score);

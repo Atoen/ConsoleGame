@@ -21,11 +21,6 @@ public class Projectile : GameObject
         Direction = info.Direction;
     }
 
-    public virtual void Disable()
-    {
-        Remove();
-    }
-
     public virtual void Move()
     {
         Clear();
@@ -71,9 +66,10 @@ public class Projectile : GameObject
                 
                 Pos.AddFraction(Speed, 0);
                 break;
-            
+
+            case ProjectileDirection.None:
             default:
-                throw new ArgumentOutOfRangeException();
+                break;
         }
         
         Draw();

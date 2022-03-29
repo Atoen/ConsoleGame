@@ -45,5 +45,6 @@ public enum ProjectileDirection
     Up,
     Down,
     Left,
-    Right
+    Right,
+    None
 }

@@ -18,9 +18,8 @@ public static class ObjectManager
 
     private const int EnemyMoveDelay = 5;
     private static int _backgroundTicks;
-
-    public static int PlayerHealth => Player.CurrentHealth;
-    
+    public static event EventHandler<GameOverArgs>? GameOverEvent;
+        
     public static void Update()
     {
         Player.PerformAction(Input.Get);
@@ -33,7 +32,7 @@ public static class ObjectManager
             projectile.Move();
 
             if (!CheckCollision(projectile)) continue;
-            MarkForRemoval(projectile);
+            projectile.Remove();
         }
 
         if (_backgroundTicks % EnemyMoveDelay == 0)
@@ -131,6 +130,16 @@ public static class ObjectManager
                     enemy.Clear();
                     Enemies.Remove(enemy);
                     break;
+                
+                case EnemyGroup enemyGroup:
+                    EnemyGroups.Remove(enemyGroup);
+                    
+                    if (EnemyGroups.Count == 0)
+                    {
+                        GameOverEvent?.Invoke(null, new GameOverArgs(true));
+                    }
+                    
+                    break;
             }
         }
         
@@ -154,7 +163,10 @@ public static class ObjectManager
 
         if (projectile.Hostile)
         {
-            return Player.HitBox(ref projectile);
+            if (!Player.HitBox(ref projectile)) return false;
+            if (Player.CurrentHealth < 1) GameOverEvent?.Invoke(null, new GameOverArgs(false));
+            return true;
+
         }
 
         foreach (var enemy in Enemies)
@@ -163,5 +175,15 @@ public static class ObjectManager
         }
 
         return false;
+    }
+}
+
+public class GameOverArgs : EventArgs
+{
+    public bool Won { get; }
+    
+    public GameOverArgs(bool won)
+    {
+        Won = won;
     }
 }

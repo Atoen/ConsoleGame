@@ -12,6 +12,7 @@ public static class Game
     private const int TickSpeed = 50;
     
     private static bool _isRunning = true;
+    private static bool _victory;
     private static int _score;
     public static event EventHandler? InterfaceEvent;
     
@@ -36,10 +37,15 @@ public static class Game
         Console.CursorVisible = false;
 
         Input.QuitEvent += (_, _) => _isRunning = false;
+        ObjectManager.GameOverEvent += (_, args) =>
+        {
+            _victory = args.Won;
+            _isRunning = false;
+        };
 
-        for (var i = 0; i < byte.MaxValue; i++)
-            Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
-        Display.Update();
+        // for (var i = 0; i < byte.MaxValue; i++)
+        //     Display.Print(i % GameScreenWidth, i / GameScreenWidth, (char) i, ConsoleColor.White);
+        // Display.Update();
 
         DrawSplashScreen();
         
@@ -73,21 +79,30 @@ public static class Game
             Thread.Sleep(timeToSleep);
         }
         
+        Console.ResetColor();
         Console.Clear();
+        
+        var message = _victory ? "You won!" : "Game over!";
+        
+        Console.WriteLine($"{message}\nYou scored {Score} points!");
+        Console.WriteLine($"Press any key to exit...");
+        Console.ReadKey();
     }
 
     private static void PrepareField()
     {
-        for (var i = 0; i < 10; i++)
+        for (var i = 20; i < 80; i++)
         {
-            ObjectManager.Add(new Obstacle(10 + i, 15));
+            if (i == 40) i += 20;
+
+            ObjectManager.Add(new Obstacle(i, 18));
         }
-        
+
         ObjectManager.Add<TankEnemy>(new EnemyGroup(5, 1, 50, 1, EnemyDirection.Left));
         
-        // ObjectManager.Add<RegularEnemy>(new EnemyGroup(8, 2, 30, 6));
+        ObjectManager.Add<RegularEnemy>(new EnemyGroup(8, 2, 30, 6));
         
-        // ObjectManager.Add<FastEnemy>(new EnemyGroup(2, 1, 70, 12, EnemyDirection.Left));
+        ObjectManager.Add<FastEnemy>(new EnemyGroup(2, 1, 70, 12, EnemyDirection.Left));
     }
 
     private static void DrawSplashScreen()

@@ -44,11 +44,14 @@ public static class Display
 
     public static void Print(int posX, int posY, char symbol, ConsoleColor color)
     {
+        if (posX is < 0 or > Game.GameScreenWidth || posY is < 0 or >= Game.GameScreenHeight)
+            return;
+
         var index = posX + Game.GameScreenWidth * posY;
         var symbolByte = (byte) symbol;
 
         if (Buffer[index].Symbol == symbolByte) return;
-        
+
         Buffer[index].Symbol = symbolByte;
         Buffer[index].Color = (short) color;
 
@@ -57,6 +60,9 @@ public static class Display
     
     public static void ClearAt(int posX, int posY)
     {
+        if (posX is < 0 or > Game.GameScreenWidth || posY is < 0 or >= Game.GameScreenHeight)
+            return;
+        
         var index = posX + Game.GameScreenWidth * posY;
         
         if (Buffer[index].Symbol == 32) return;
